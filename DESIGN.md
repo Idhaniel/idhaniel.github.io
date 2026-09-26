@@ -193,8 +193,8 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 
 ## 11. Open items (from Daniel)
 
-- [ ] Is the loan system under NDA? This decides whether to show real UI or keep the abstracted ledger only.
-- [ ] Repo or live links for Cachet, E-commerce, and Supply Chain
+- [x] Loan system is under NDA: keep the abstracted ledger only, no real UI.
+- [x] Repos: Cachet https://github.com/Idhaniel/cachet, Supply chain https://github.com/Idhaniel/Supply-Chain-Public, E-commerce https://github.com/Idhaniel/monarch-stores-public. Most other work is private or under NDA.
 - [ ] Photo, or confirmation to skip it
-- [ ] Résumé PDF, for `public/resume.pdf`
+- [x] Résumé PDF, at `public/resume.pdf`
 - [ ] Availability line (open to roles? remote? start date?)
