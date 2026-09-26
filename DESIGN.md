@@ -1,0 +1,198 @@
+# Daniel Uwandu — Portfolio Design Spec
+
+The single source of truth for the build. If code and this file disagree, this file wins until it is updated on purpose.
+
+Mockup canvas (reference visuals): https://claude.ai/artifact/2hySDbeqhjhVuk7bEeScUs
+
+## 1. What this site is
+
+A portfolio for a backend and systems developer whose work is about correctness: ledgers that balance, a key-value store that stays correct under load, supply-chain records that can't be rewritten. The site proves that by letting visitors *use* small versions of the work, rather than listing it.
+
+Audience: engineering managers, senior engineers, recruiters. They skim first, then go deep on one project. The page must reward both.
+
+The feel: calm, dark, precise. Apple-level restraint in spacing and type, with Mercury's quiet dark surfaces and Integrated Biosciences' big type and hairline structure. Dull, not dead.
+
+## 2. Color (60-30-10)
+
+| Role | Name | Hex | Share |
+|---|---|---|---|
+| Canvas | Ink | `#141719` | 60% |
+| Raised surface (panels) | Plate | `#1b1f22` | 30% (with text + rules) |
+| Deep surface (terminal) | Well | `#0f1214` | part of 30% |
+| Hairline rule | Rule | `#262b2e` / `#2b3034` | part of 30% |
+| Control outline | Edge | `#3a4044` | part of 30% |
+| Primary text | Bone | `#e4e1d9` | part of 30% |
+| Secondary text | Stone | `#c7c5bf` | part of 30% |
+| Muted text / labels | Ash | `#8e9296` | part of 30% |
+| Accent | Brass | `#b39c6c` | 10%, strictly |
+
+Brass is used for exactly these things:
+- the one primary button per view
+- "balanced" / success state text
+- the active shard, focus rings, and benchmark bars
+- the ledger pivot and the T-account rule on the OG image
+
+Brass is never used for:
+- headings
+- large fills
+- section backgrounds
+- gradients
+
+Alternates tested in the mockup: olive `#8a9577`, steel `#7b8c9a`. Brass is the pick.
+
+Contrast floors:
+- Body text 4.5:1 minimum. Ash on Ink passes; don't go darker than Ash for readable text.
+- Text on brass is Ink `#141719`.
+
+Theme: dark only for v1. Expose all colors as CSS custom properties so a light theme can be added later without touching components.
+
+## 3. Type
+
+- **Hanken Grotesk** (Google Fonts), weights 300, 400, 500. Everything except data. Never bold above 500.
+- **IBM Plex Mono**, weights 400, 500. Only for real data: currency amounts, commands, terminal output, benchmark numbers. Never for labels, nav, or decoration.
+
+| Token | Size / line-height | Weight | Tracking | Use |
+|---|---|---|---|---|
+| display | clamp(88px, 13vw, 188px) / 0.88 | 400 | -0.048em | Hero name only |
+| h2 | clamp(44px, 5vw, 68px) / 1.0 | 400 | -0.035em | Chapter headlines |
+| lede | clamp(22px, 2vw, 28px) / 1.32 | 300 | -0.012em | Hero statement |
+| body-lg | 19px / 1.55 | 400 | 0 | Chapter body |
+| body | 16px / 1.55 | 400 | 0 | Supporting copy |
+| small | 14–15px / 1.45 | 400 | 0 | Meta, captions |
+| data | 14–17px / 1.5 | 400 | 0 | Mono amounts and commands |
+
+Type rules:
+- Sentence case everywhere.
+- No ALL-CAPS eyebrow labels.
+- No single highlighted word in a headline.
+- Lines under ~70 characters.
+- Left-aligned text. Centering is allowed only for the ledger status line.
+
+## 4. Shape and space
+
+- **Radius:**
+  - 999px for buttons and chips (pills)
+  - 18px for panels
+  - 6px for small cells
+  - 3px for bars
+  - nothing else
+- **Shadows:** none. Elevation comes from Ink to Plate value steps and 1px rules.
+- **Layout:**
+  - 12-column grid, 24px gutter
+  - 96px side padding on desktop, 24px on mobile
+  - Content max width 1248px
+- **Section rhythm:** 160px between chapters on desktop, 96px on mobile. Keep it generous.
+- **Touch targets:** 44px minimum.
+
+## 5. Page structure (scroll story)
+
+1. **Hero.** Small wordmark and nav (Work, About, Résumé, brass "Email me" pill). The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Elsewhere). No photo in the hero. No typing effect.
+2. **Chapter — The ledger (Today's Solution).** The signature moment.
+   - Left column: meta, headline "Every naira has two sides.", and body text.
+   - Right column: a pinned panel with a balance beam, a journal, and totals.
+   - Scroll behavior: as the user scrolls through a ~300vh section, each of the four example entries posts. The debit lands first, the beam tilts, and the status reads "Out by ₦X". The credit then lands and the beam settles with "Balanced."
+   - Reduced motion: all four entries are shown posted, with no beam tilt.
+3. **Chapter — Cachet.**
+   - Left column: story and benchmark bars (SET 77k+, GET 59k+, 50 clients).
+   - Right column: a working in-browser terminal (SET/GET/DEL/EXPIRE/TTL/PING, with a real TTL countdown) and an 8-shard strip that lights the shard for the last key.
+   - Suggestion chips run example commands.
+4. **Chapter — Fish supply chain.**
+   - A pinned horizontal scroll with five stops: farm, processor, distributor, retailer, consumer.
+   - Each stop is written as a "block": the event, a short hash, and an attached IoT reading (temperature, humidity).
+   - Earlier blocks visibly chain to later ones with a thin rule.
+   - The final frame explains the Solidity contracts, role-based access, and the Nethereum backend.
+5. **Chapter — E-commerce backend.**
+   - A compact case study: a module diagram (NestJS modules as outlined boxes) and one annotated order-plus-payment transaction sequence.
+   - No scroll pinning. Contrast with the chapters above is intentional.
+6. **About.**
+   - Two short paragraphs in first person, plus education (UNILAG, Computer Engineering, 2026, CGPA 4.52/5.00).
+   - Optional photo, shown as a plain rectangle with an 18px radius and a mild grayscale.
+7. **Stack.**
+   - Four plain grouped lists: Languages, Backend, Data, Infrastructure.
+   - No logos, no percentage bars, no star ratings.
+8. **Contact.**
+   - A large "Email me" line (mailto), plus GitHub and LinkedIn.
+   - Footer with location and time zone, written as a sentence ("Lagos, Nigeria. GMT+1.").
+
+The chapter order is a sequence, so a small "Work 1 of 4" style indicator is allowed in a sticky chapter nav. Nowhere else.
+
+## 6. Motion
+
+Library choices:
+- **Motion** (`motion` package): React islands, `useScroll`, `useTransform`
+- **Lenis**: smooth scroll, lerp around 0.1
+- **GSAP**: not used, to keep one mental model
+
+Easing and timing:
+- Standard ease: `cubic-bezier(.2,.8,.2,1)`
+- Durations: 250ms for UI feedback, 650ms for reveals and beam, never over 900ms
+
+What moves:
+- **One page-load moment.** The hero name rises into place with a clip reveal, line by line, 80ms stagger. The nav and lede fade in after. That is the only unprompted animation.
+- **Scroll-driven motion is reserved for the ledger and supply-chain chapters.** Everything else is static until interacted with.
+- **Interaction feedback:**
+  - Buttons darken 6% on hover.
+  - Links shift to brass on hover.
+  - Focus rings are 2px brass with a 3px offset.
+
+What does not move:
+- No fade-up on every section.
+- No parallax on text.
+- No cursor followers, particles, marquees, or magnetic buttons.
+
+Accessibility and performance:
+- `prefers-reduced-motion: reduce` disables Lenis, disables pinning, and shows the final states.
+- Animate only `transform` and `opacity`.
+- Target 60fps on a mid-range Android phone.
+
+## 7. Tech
+
+- **Astro 5**, static output. React islands only for the Ledger, Terminal, and SupplyChain components.
+- Tailwind is optional. If used, map every token above into `@theme` and never use arbitrary colors.
+- Fonts self-hosted via `@fontsource/hanken-grotesk` and `@fontsource/ibm-plex-mono`.
+- **Deployment:** GitHub Pages from the repo `Idhaniel/Idhaniel.github.io`, using the official `withastro/action` workflow. The site URL is `https://idhaniel.github.io`.
+- **Performance budget:**
+  - Lighthouse 95+ on all four categories
+  - JS under 120 KB gzipped on the home page
+  - LCP under 1.8s on 4G
+
+## 8. SEO and link previews
+
+- `<title>`: "Daniel Uwandu — Software developer"
+- Meta description: one sentence, taken from the hero lede.
+- Open Graph tags:
+  - `og:title`, `og:description`, `og:type=website`, `og:url`
+  - `og:image` at 1200×630, using an **absolute** URL
+  - `og:image:alt`
+- Twitter tags: `twitter:card=summary_large_image` plus the matching title, description, and image.
+- The OG image is generated at build time from the design in the mockup (Satori via `astro-og-canvas` or a small Satori script) and saved to `public/og.png`. A static exported PNG is also fine.
+- Also include: favicon (a small brass T-account mark), `robots.txt`, `sitemap.xml`, and JSON-LD `Person` schema.
+
+After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
+
+## 9. Copy rules
+
+- First person, plain verbs, specific numbers.
+- Banned words: passionate, leverage, cutting-edge, seamless, innovative, "I love to", journey.
+- No emoji.
+- Buttons say what they do ("Email me", "Post next entry", "Run").
+- The ledger amounts are labelled as example entries. Never imply they are real client data.
+
+## 10. Things we will not do (AI tells)
+
+- Purple/blue gradients, glassmorphism, glowing blobs, grain overlays
+- "Hi, I'm Daniel 👋", typewriter text, rotating job titles
+- Identical rounded cards with soft grey shadows
+- Logo walls, skill bars, GitHub-stats widgets
+- Arrows appended to every link
+- Middle-dot meta strings
+- Mono type used for decoration
+- Animating every section on enter
+
+## 11. Open items (from Daniel)
+
+- [ ] Is the loan system under NDA? This decides whether to show real UI or keep the abstracted ledger only.
+- [ ] Repo or live links for Cachet, E-commerce, and Supply Chain
+- [ ] Photo, or confirmation to skip it
+- [ ] Résumé PDF, for `public/resume.pdf`
+- [ ] Availability line (open to roles? remote? start date?)

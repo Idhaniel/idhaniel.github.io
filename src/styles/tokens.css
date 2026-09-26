@@ -1,0 +1,65 @@
+/* Design tokens. Source of truth: DESIGN.md. Components use these, never raw hex. */
+:root {
+  /* Color */
+  --ink: #141719;
+  --plate: #1b1f22;
+  --well: #0f1214;
+  --rule: #262b2e;
+  --rule-strong: #2b3034;
+  --edge: #3a4044;
+  --bone: #e4e1d9;
+  --stone: #c7c5bf;
+  --ash: #8e9296;
+  --brass: #b39c6c;
+  --brass-hover: color-mix(in srgb, var(--brass) 94%, black);
+  --on-brass: var(--ink);
+
+  /* Type */
+  --font-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+
+  /* Phones: sized so "Uwandu" fills the width without overflowing. */
+  --text-display: min(22vw, 120px);
+  --lh-display: 0.88;
+  --track-display: -0.048em;
+
+  --text-h2: clamp(40px, 5vw, 68px);
+  --lh-h2: 1;
+  --track-h2: -0.035em;
+
+  --text-lede: clamp(21px, 2vw, 28px);
+  --lh-lede: 1.32;
+  --track-lede: -0.012em;
+
+  --text-body-lg: 19px;
+  --text-body: 16px;
+  --text-small: 15px;
+  --lh-body: 1.55;
+  --lh-small: 1.45;
+
+  /* Shape */
+  --radius-pill: 999px;
+  --radius-panel: 18px;
+  --radius-cell: 6px;
+  --radius-bar: 3px;
+
+  /* Layout */
+  --gutter: 24px;
+  --side: 24px;
+  --max: 1248px;
+  --chapter-gap: 96px;
+  --target: 44px;
+
+  /* Motion */
+  --ease: cubic-bezier(.2, .8, .2, 1);
+  --dur-ui: 250ms;
+  --dur-reveal: 650ms;
+}
+
+@media (min-width: 720px) {
+  :root { --side: 48px; --text-display: clamp(96px, 13vw, 188px); }
+}
+
+@media (min-width: 1100px) {
+  :root { --side: 96px; --chapter-gap: 160px; }
+}
