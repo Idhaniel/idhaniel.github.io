@@ -192,3 +192,13 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 - [x] Photo: `src/assets/daniel.jpg`
 - [x] Résumé PDF, at `public/resume.pdf`
 - [x] Availability: open to any role, remote preferred, can start now.
+
+## 12. Changes after review (Sept 2026)
+
+- Role wording is "software developer", not "backend developer". The hero lede is formal and lists the languages from the CV.
+- About is about Daniel as a developer (curiosity, how he works, interests). It does not list project wins.
+- Under 900px the hero is centred: name above the nav, photo and name centred, lede centred, and the theme toggle at the top right.
+- Touch screens: the network map has a wandering probe (tap to pull it over), and the ledger posts its entries by itself once it is on screen.
+- Light theme: tokens in `tokens.css` under `[data-theme='light']` and `prefers-color-scheme: light`. `--accent` stays the lime fill; `--accent-ink` / `--amber-ink` are the text-and-line versions (darker on light). The toggle (`ThemeToggle.astro`) saves the choice in localStorage; an inline script applies it before first paint.
+- Link preview: `public/og.png`, made by `npm run og` (satori + sharp, `scripts/og.mjs`).
+- CSS is inlined and the two main font files are preloaded. Lighthouse on the production build: mobile 96–98 performance, 100 accessibility, best practices and SEO; desktop 100 across the board.

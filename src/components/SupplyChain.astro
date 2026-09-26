@@ -220,8 +220,9 @@ const blocks = stops.map((s, i) => {
   }
   .chain.is-live .chain__viewport { overflow: visible; scroll-snap-type: none; }
   .chain.is-live .chain__track { will-change: transform; }
-  .chain.is-live .block { opacity: 0.45; transform: scale(0.94); }
-  .chain.is-live .block.is-past { opacity: 0.7; transform: none; }
+  /* Dimmed, but still readable (text keeps 4.5:1 contrast). */
+  .chain.is-live .block { opacity: 0.85; transform: scale(0.94); }
+  .chain.is-live .block.is-past { opacity: 0.92; transform: none; }
   .chain.is-live .block.is-on { opacity: 1; transform: none; border-color: var(--accent-ink); }
   .chain.is-live .block.is-on .block__hash { color: var(--accent-ink); }
 
