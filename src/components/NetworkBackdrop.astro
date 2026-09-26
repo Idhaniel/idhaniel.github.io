@@ -99,7 +99,7 @@ const routePaths = routes.map((hops) =>
       </circle>
     ))}
   </g>
-  <g class="net__cursor"><line /><line /><line /></g>
+  <g class="net__cursor"><line /><line /><line /><circle r="4" class="net__probe" /></g>
   <g class="net__nodes">
     {nodes.map((n) =>
       n.hub
@@ -110,43 +110,68 @@ const routePaths = routes.map((hops) =>
 </svg>
 
 <script>
-  // Nodes near the pointer light up and the pointer "joins" the network
-  // with links to its three nearest nodes. Fine pointers only.
-  if (matchMedia('(pointer: fine)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  // Nodes near a "probe" light up, and the probe joins the network with
+  // dashed links to its three nearest nodes. With a mouse, the probe is the
+  // cursor. On touch screens it wanders on its own, and a tap pulls it over.
+  if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     const nets = [...document.querySelectorAll<SVGSVGElement>('svg.net')];
-    let px = 0, py = 0, queued = false;
-    const update = () => {
-      queued = false;
-      for (const svg of nets) {
-        const box = svg.getBoundingClientRect();
-        if (box.bottom < 0 || box.top > innerHeight) continue;
-        const m = svg.getScreenCTM();
-        if (!m) continue;
-        const pt = new DOMPoint(px, py).matrixTransform(m.inverse());
-        const nodes = [...svg.querySelectorAll<SVGElement>('[data-x]')];
-        const ranked = nodes
-          .map((n) => ({ n, d: Math.hypot(+n.dataset.x! - pt.x, +n.dataset.y! - pt.y) }))
-          .sort((a, b) => a.d - b.d);
-        const inside = py >= box.top && py <= box.bottom;
-        for (const { n, d } of ranked) n.classList.toggle('near', inside && d < 180);
-        const links = svg.querySelectorAll<SVGLineElement>('.net__cursor line');
-        links.forEach((l, i) => {
-          const t = ranked[i];
-          const on = inside && t && t.d < 260;
-          l.style.opacity = on ? String(0.9 - i * 0.25) : '0';
-          if (t) {
-            l.setAttribute('x1', String(pt.x)); l.setAttribute('y1', String(pt.y));
-            l.setAttribute('x2', t.n.dataset.x!); l.setAttribute('y2', t.n.dataset.y!);
-          }
-        });
-      }
+    const fine = matchMedia('(pointer: fine)').matches;
+    let px = -1e4, py = -1e4, queued = false;
+    let tapX = 0, tapY = 0, tapAt = -1e9;
+
+    const probe = (svg: SVGSVGElement, x: number, y: number) => {
+      const box = svg.getBoundingClientRect();
+      const m = svg.getScreenCTM();
+      if (!m) return;
+      const pt = new DOMPoint(x, y).matrixTransform(m.inverse());
+      const ranked = [...svg.querySelectorAll<SVGElement>('[data-x]')]
+        .map((n) => ({ n, d: Math.hypot(+n.dataset.x! - pt.x, +n.dataset.y! - pt.y) }))
+        .sort((a, b) => a.d - b.d);
+      const inside = y >= box.top && y <= box.bottom;
+      const dot = svg.querySelector<SVGCircleElement>('.net__probe');
+      if (dot) { dot.setAttribute('cx', String(pt.x)); dot.setAttribute('cy', String(pt.y)); dot.style.opacity = inside ? '1' : '0'; }
+      for (const { n, d } of ranked) n.classList.toggle('near', inside && d < 180);
+      svg.querySelectorAll<SVGLineElement>('.net__cursor line').forEach((l, i) => {
+        const t = ranked[i];
+        l.style.opacity = inside && t && t.d < 260 ? String(0.9 - i * 0.25) : '0';
+        if (t) {
+          l.setAttribute('x1', String(pt.x)); l.setAttribute('y1', String(pt.y));
+          l.setAttribute('x2', t.n.dataset.x!); l.setAttribute('y2', t.n.dataset.y!);
+        }
+      });
     };
-    const onMove = (e: PointerEvent) => {
-      px = e.clientX; py = e.clientY;
-      if (!queued) { queued = true; requestAnimationFrame(update); }
+    const visible = (svg: SVGSVGElement) => {
+      const b = svg.getBoundingClientRect();
+      return b.bottom > 0 && b.top < innerHeight ? b : null;
     };
-    addEventListener('pointermove', onMove, { passive: true });
-    addEventListener('scroll', () => { if (!queued) { queued = true; requestAnimationFrame(update); } }, { passive: true });
+
+    if (fine) {
+      const update = () => {
+        queued = false;
+        for (const svg of nets) if (visible(svg)) probe(svg, px, py);
+      };
+      const request = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+      addEventListener('pointermove', (e) => { px = e.clientX; py = e.clientY; request(); }, { passive: true });
+      addEventListener('scroll', request, { passive: true });
+    } else {
+      addEventListener('pointerdown', (e) => { tapX = e.clientX; tapY = e.clientY; tapAt = performance.now(); }, { passive: true });
+      const loop = (t: number) => {
+        for (const svg of nets) {
+          const b = visible(svg);
+          if (!b) continue;
+          // A slow figure-of-eight across the visible part of the map.
+          const top = Math.max(b.top, 0), bottom = Math.min(b.bottom, innerHeight);
+          let x = b.left + b.width * (0.5 + 0.38 * Math.sin(t / 2600));
+          let y = top + (bottom - top) * (0.5 + 0.34 * Math.sin(t / 1700));
+          // Ease towards the last tap for a few seconds.
+          const k = Math.max(0, 1 - (t - tapAt) / 3500);
+          x += (tapX - x) * k; y += (tapY - y) * k;
+          probe(svg, x, y);
+        }
+        requestAnimationFrame(loop);
+      };
+      requestAnimationFrame(loop);
+    }
   }
 </script>
 
@@ -187,8 +212,10 @@ const routePaths = routes.map((hops) =>
     opacity: 0;
     transition: opacity var(--dur-ui) var(--ease);
   }
+  .net__probe { fill: var(--accent); opacity: 0; }
+  @media (pointer: fine) { .net__probe { display: none; } }
   @media (prefers-reduced-motion: reduce) {
-    .net__packets { display: none; }
+    .net__packets, .net__probe { display: none; }
   }
   @media (prefers-reduced-motion: no-preference) {
     .net__pulses line { animation: hop 9s var(--ease) infinite; animation-delay: var(--delay); }

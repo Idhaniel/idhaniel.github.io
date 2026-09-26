@@ -73,6 +73,21 @@ export default function Ledger() {
     setStage(0);
   };
 
+  // Phones: post the entries by themselves once the panel is on screen.
+  const autoplayed = useRef(false);
+  useEffect(() => {
+    if (mode !== 'button' || !panelIn || autoplayed.current) return;
+    autoplayed.current = true;
+    let s = 0;
+    const next = () => {
+      if (s >= LAST_STAGE) return;
+      s += 1;
+      setStage(s);
+      timer.current = window.setTimeout(next, s % 2 ? 700 : 1100);
+    };
+    timer.current = window.setTimeout(next, 500);
+  }, [mode, panelIn]);
+
   let dr = 0;
   let cr = 0;
   const posted = ENTRIES.slice(0, step).map((entry, i) => {

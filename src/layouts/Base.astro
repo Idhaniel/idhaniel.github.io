@@ -7,8 +7,8 @@ interface Props {
 }
 
 const {
-  title = 'Daniel Uwandu — Backend developer',
-  description = 'Backend developer in Lagos working in C#, ASP.NET Core, TypeScript and NestJS. I like to understand a system all the way down, so when it breaks I already have a clue where to look.',
+  title = 'Daniel Uwandu — Software developer',
+  description = 'Software developer based in Lagos, Nigeria. I work in C#, TypeScript, JavaScript, Go, C++, SQL and Solidity, building on ASP.NET Core and NestJS with SQL Server and PostgreSQL.',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
@@ -16,7 +16,7 @@ const person = {
   '@context': 'https://schema.org',
   '@type': 'Person',
   name: 'Daniel Uwandu',
-  jobTitle: 'Backend developer',
+  jobTitle: 'Software developer',
   address: { '@type': 'PostalAddress', addressLocality: 'Lagos', addressCountry: 'NG' },
   alumniOf: 'University of Lagos',
   url: 'https://idhaniel.github.io',

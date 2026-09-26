@@ -151,7 +151,7 @@ Rules:
 
 ## 8. SEO and link previews
 
-- `<title>`: "Daniel Uwandu — Backend developer"
+- `<title>`: "Daniel Uwandu — Software developer"
 - Meta description: one sentence, taken from the hero lede.
 - Open Graph tags:
   - `og:title`, `og:description`, `og:type=website`, `og:url`

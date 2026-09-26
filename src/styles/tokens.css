@@ -20,20 +20,20 @@
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 
   /* Phones: sized so "Uwandu" fills the width without overflowing. */
-  --text-display: min(19vw, 96px);
+  --text-display: min(16vw, 80px);
   --lh-display: 0.88;
   --track-display: -0.048em;
 
-  --text-h2: clamp(30px, 3.4vw, 46px);
+  --text-h2: clamp(28px, 3vw, 42px);
   --lh-h2: 1;
   --track-h2: -0.035em;
 
-  --text-lede: clamp(18px, 1.5vw, 21px);
+  --text-lede: clamp(17px, 1.4vw, 20px);
   --lh-lede: 1.32;
   --track-lede: -0.012em;
 
-  --text-body-lg: 17px;
-  --text-statement: clamp(24px, 2.8vw, 40px);
+  --text-body-lg: 16px;
+  --text-statement: clamp(22px, 2.5vw, 34px);
   --lh-statement: 1.18;
   --track-statement: -0.022em;
   --text-body: 16px;
@@ -61,7 +61,7 @@
 }
 
 @media (min-width: 720px) {
-  :root { --side: 48px; --text-display: clamp(84px, 9.5vw, 136px); }
+  :root { --side: 48px; --text-display: clamp(72px, 8.5vw, 120px); }
 }
 
 @media (min-width: 1100px) {

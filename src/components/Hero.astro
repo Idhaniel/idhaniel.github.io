@@ -41,8 +41,9 @@ const last = 'Uwandu'.split('');
 
       <div class="meta">
         <p class="lede">
-          Backend developer in Lagos. Most days that means C# and ASP.NET Core,
-          or TypeScript and NestJS, over SQL Server or PostgreSQL.
+          Software developer based in Lagos, Nigeria. I work in C#, TypeScript,
+          JavaScript, Go, C++, SQL and Solidity, building on ASP.NET Core and
+          NestJS with SQL Server and PostgreSQL.
         </p>
 
         <dl class="facts">
@@ -190,8 +191,22 @@ const last = 'Uwandu'.split('');
   .links a { border-bottom: 1px solid var(--edge); }
   .links a:hover { border-color: var(--accent); }
 
+  /* Phones and tablets: everything centred, name above the nav. */
+  @media (max-width: 899px) {
+    .bar { flex-direction: column; justify-content: center; gap: 4px; }
+    .nav { justify-content: center; flex-wrap: wrap; gap: 4px 24px; }
+    .top { align-items: center; }
+    .name { text-align: center; }
+    .meta { text-align: center; }
+    .lede { margin-inline: auto; }
+    .facts {
+      grid-template-columns: 88px minmax(0, 250px);
+      justify-content: center;
+      text-align: left;
+    }
+  }
   @media (max-width: 719px) {
-    .nav { width: 100%; justify-content: space-between; gap: 4px 16px; }
+    .nav { width: 100%; justify-content: space-between; gap: 4px 12px; }
     .nav .pill { padding: 0 18px; }
   }
 
