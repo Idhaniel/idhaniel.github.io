@@ -4,6 +4,7 @@ import Hero from '../components/Hero.astro';
 import Story from '../components/Story.astro';
 import Ledger from '../components/Ledger.tsx';
 import Cachet from '../components/Cachet.tsx';
+import SupplyChain from '../components/SupplyChain.astro';
 ---
 <Base>
   <Hero />
@@ -11,5 +12,7 @@ import Cachet from '../components/Cachet.tsx';
   <main id="work">
     <Ledger client:load />
     <Cachet client:visible />
+    <SupplyChain />
   </main>
+  <div style="height: 40vh" aria-hidden="true"></div>
 </Base>

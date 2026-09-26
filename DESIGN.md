@@ -76,7 +76,7 @@ Type rules:
 
 ## 5. Page structure (scroll story)
 
-1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Available / Elsewhere). Daniel's photo sits to the right of the name (under the nav on phones), 18px radius, mild grayscale. A faint network map (nodes, hairline links, the odd pulse hopping along a route) fills the background, strongest top right. No typing effect.
+1. **Hero.** Small wordmark and nav (Work, About, Download CV, accent "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Available / Elsewhere). Daniel's photo sits to the right of the name (under the nav on phones), 18px radius, mild grayscale. A faint network map (nodes, hairline links, the odd pulse hopping along a route) fills the background, strongest top right. No typing effect.
 1b. **Story.** A pinned section with three short first-person statements, shown one at a time with an "01 / 03" counter and a hairline progress bar. Words brighten one by one as you scroll (after Integrated Biosciences). The network map sits faintly behind it. Reduced motion or no JS: the three statements stacked and fully lit.
 2. **Chapter — The ledger (Today's Solution).** The signature moment.
    - Left column: "01 / 04" chip with "Selected work", headline "A wallet that always balances", one or two sentences, and stack chips. No instructions about how to use the demo; the UI should explain itself.
@@ -95,6 +95,7 @@ Type rules:
    - Each stop is written as a "block": the event, a short hash, and an attached IoT reading (temperature, humidity).
    - Earlier blocks visibly chain to later ones with a thin rule.
    - The final frame explains the Solidity contracts, role-based access, and the Nethereum backend.
+   - Built: `src/components/SupplyChain.astro`. Vertical scroll moves the track sideways while pinned; a packet rides the chain line above the cards; the centred block lights up with its hash in accent. Reduced motion or no JS: a native swipeable row. Links to github.com/Idhaniel/Supply-Chain-Public.
 5. **Chapter — E-commerce backend.**
    - A compact case study: a module diagram (NestJS modules as outlined boxes) and one annotated order-plus-payment transaction sequence.
    - No scroll pinning. Contrast with the chapters above is intentional.
@@ -156,7 +157,7 @@ Rules:
   - `og:image:alt`
 - Twitter tags: `twitter:card=summary_large_image` plus the matching title, description, and image.
 - The OG image is generated at build time from the design in the mockup (Satori via `astro-og-canvas` or a small Satori script) and saved to `public/og.png`. A static exported PNG is also fine.
-- Also include: favicon (a small brass T-account mark), `robots.txt`, `sitemap.xml`, and JSON-LD `Person` schema.
+- Also include: favicon (a small accent T-account mark), `robots.txt`, `sitemap.xml`, and JSON-LD `Person` schema.
 
 After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 

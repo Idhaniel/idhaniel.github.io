@@ -1,0 +1,235 @@
+---
+// Five handovers of one batch of fish, each written as a block that points
+// at the one before it. Hashes are derived from the block text for display.
+type Stop = { who: string; event: string; temp: string; humidity: string };
+const stops: Stop[] = [
+  { who: 'Farm', event: 'Batch 0417 harvested, 320 kg catfish', temp: '4.1 °C', humidity: '81%' },
+  { who: 'Processor', event: 'Cleaned, graded and packed in 40 boxes', temp: '2.8 °C', humidity: '76%' },
+  { who: 'Distributor', event: 'Loaded on cold truck LAG-218 to Ikeja', temp: '3.3 °C', humidity: '72%' },
+  { who: 'Retailer', event: '40 boxes received and shelved', temp: '3.9 °C', humidity: '70%' },
+  { who: 'Consumer', event: 'Scans the box and sees every step before it', temp: '4.0 °C', humidity: '68%' },
+];
+
+function hash(text: string) {
+  let h1 = 0x811c9dc5, h2 = 0x01000193;
+  for (let i = 0; i < text.length; i++) {
+    h1 = Math.imul(h1 ^ text.charCodeAt(i), 16777619);
+    h2 = Math.imul(h2 ^ text.charCodeAt(i), 2246822519);
+  }
+  return '0x' + ((h1 >>> 0).toString(16) + (h2 >>> 0).toString(16)).padStart(16, '0').slice(0, 12);
+}
+let prev = '0x000000000000';
+const blocks = stops.map((s, i) => {
+  const h = hash(prev + s.who + s.event + s.temp);
+  const b = { ...s, n: i + 1, hash: h, prev };
+  prev = h;
+  return b;
+});
+---
+<section class="chain" aria-labelledby="chain-title" data-chain>
+  <div class="chain__stage">
+    <div class="container chain__head">
+      <p class="chain__meta"><span class="chip">03 / 04</span><span>Project</span></p>
+      <h2 id="chain-title" class="chain__title" data-split>Tracing fish from farm to market</h2>
+      <p class="chain__lede" data-reveal data-reveal-delay="1">
+        Each handover is signed on-chain by whoever holds the batch, with a
+        cold-chain reading from an IoT sensor attached. No one can quietly
+        rewrite an earlier step.
+      </p>
+    </div>
+
+    <div class="chain__viewport" data-chain-viewport>
+      <ol class="chain__track" data-chain-track>
+        <li class="chain__rail" aria-hidden="true"><span class="chain__packet" data-chain-packet></span></li>
+        {blocks.map((b) => (
+          <li class="block" data-block>
+            <p class="block__top">
+              <span class="block__n">Block {b.n}</span>
+              <span class="block__who">{b.who}</span>
+            </p>
+            <p class="block__event">{b.event}</p>
+            <dl class="block__iot">
+              <div><dt>Temp</dt><dd class="num">{b.temp}</dd></div>
+              <div><dt>Humidity</dt><dd class="num">{b.humidity}</dd></div>
+            </dl>
+            <dl class="block__hashes">
+              <div><dt>Prev</dt><dd class="num">{b.prev}</dd></div>
+              <div><dt>Hash</dt><dd class="num block__hash">{b.hash}</dd></div>
+            </dl>
+          </li>
+        ))}
+        <li class="block block--how" data-block>
+          <p class="block__top"><span class="block__who">How it’s built</span></p>
+          <ul class="how">
+            <li>Solidity contracts hold the record, with role-based access so only the party holding the batch can add the next step.</li>
+            <li>An ASP.NET Core backend calls the contracts through Nethereum and listens for their events.</li>
+            <li>IoT sensor readings are ingested and attached to each record.</li>
+          </ul>
+          <a class="block__link" href="https://github.com/Idhaniel/Supply-Chain-Public">Source on GitHub</a>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Vertical scroll drives the track sideways while the stage is pinned.
+  // Reduced motion (or no JS): the track is a normal swipeable row.
+  const section = document.querySelector<HTMLElement>('[data-chain]');
+  if (section && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const track = section.querySelector<HTMLElement>('[data-chain-track]')!;
+    const viewport = section.querySelector<HTMLElement>('[data-chain-viewport]')!;
+    const packet = section.querySelector<HTMLElement>('[data-chain-packet]')!;
+    const blocks = [...section.querySelectorAll<HTMLElement>('[data-block]')];
+    section.classList.add('is-live');
+
+    let distance = 0;
+    const measure = () => {
+      distance = Math.max(0, track.scrollWidth - viewport.clientWidth);
+      // Track length in vertical scroll = sideways distance + one screen.
+      section.style.height = `${distance + innerHeight}px`;
+    };
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const top = section.getBoundingClientRect().top;
+      const p = distance ? Math.min(1, Math.max(0, -top / distance)) : 0;
+      track.style.transform = `translate3d(${-p * distance}px, 0, 0)`;
+      packet.style.transform = `translate3d(${p * (track.scrollWidth - 40)}px, 0, 0)`;
+      const mid = innerWidth / 2;
+      let best = 0, bestD = Infinity;
+      blocks.forEach((b, i) => {
+        const r = b.getBoundingClientRect();
+        const d = Math.abs(r.left + r.width / 2 - mid);
+        if (d < bestD) { bestD = d; best = i; }
+      });
+      blocks.forEach((b, i) => {
+        b.classList.toggle('is-on', i === best);
+        b.classList.toggle('is-past', i < best);
+      });
+    };
+    const request = () => { if (!queued) { queued = true; requestAnimationFrame(update); } };
+    measure();
+    update();
+    addEventListener('scroll', request, { passive: true });
+    addEventListener('resize', () => { measure(); request(); });
+    document.fonts?.ready.then(() => { measure(); request(); });
+  }
+</script>
+
+<style>
+  .chain { position: relative; margin-top: var(--chapter-gap); }
+  .chain__stage { display: flex; flex-direction: column; gap: 40px; }
+
+  .chain__head { display: flex; flex-direction: column; gap: 18px; }
+  .chain__meta { margin: 0; display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--ash); }
+  .chain__title {
+    margin: 0;
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--track-h2);
+    font-weight: 400;
+  }
+  .chain__lede {
+    margin: 0;
+    max-width: 34em;
+    font-size: var(--text-body-lg);
+    line-height: var(--lh-body);
+    color: var(--stone);
+  }
+
+  /* Fallback: a native horizontal scroller. */
+  .chain__viewport {
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-inline: var(--side);
+  }
+  .chain__viewport::-webkit-scrollbar { display: none; }
+  .chain__track {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 28px var(--side) 8px 0;
+    display: flex;
+    gap: 20px;
+    width: max-content;
+  }
+
+  /* Hairline that chains every block to the next, with a packet riding it. */
+  .chain__rail {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 8px;
+    height: 1px;
+    background: var(--edge);
+    pointer-events: none;
+  }
+  .chain__packet {
+    position: absolute;
+    top: -4px;
+    left: 0;
+    width: 9px;
+    height: 9px;
+    z-index: 2;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+  }
+
+  .block {
+    position: relative;
+    z-index: 1;
+    scroll-snap-align: start;
+    width: min(78vw, 360px);
+    flex-shrink: 0;
+    background: var(--plate);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-panel);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    transition: border-color 400ms var(--ease), transform 600ms var(--ease), opacity 600ms var(--ease);
+  }
+  .block__top { margin: 0; display: flex; justify-content: space-between; gap: 12px; font-size: 14px; }
+  .block__n { color: var(--ash); }
+  .block__who { font-weight: 500; }
+  .block__event { margin: 0; font-size: var(--text-body-lg); line-height: 1.4; min-height: 2.8em; }
+  .block dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .block dl div { display: flex; flex-direction: column; gap: 2px; }
+  .block dt { font-size: 13px; color: var(--ash); }
+  .block dd { margin: 0; }
+  .num { font-family: var(--font-mono); font-size: 14px; }
+  .block__hashes { padding-top: 14px; border-top: 1px solid var(--rule); }
+  .block__hash { transition: color 400ms var(--ease); }
+
+  .block--how { width: min(86vw, 440px); }
+  .how { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; color: var(--stone); font-size: var(--text-body); line-height: 1.5; }
+  .block__link { align-self: flex-start; font-size: var(--text-small); border-bottom: 1px solid var(--edge); padding-block: 4px; }
+  .block__link:hover { border-color: var(--accent); }
+
+  /* Live: pinned stage, track moved by scroll. */
+  .chain.is-live .chain__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    justify-content: center;
+    overflow: hidden;
+  }
+  .chain.is-live .chain__viewport { overflow: visible; scroll-snap-type: none; }
+  .chain.is-live .chain__track { will-change: transform; }
+  .chain.is-live .block { opacity: 0.45; transform: scale(0.94); }
+  .chain.is-live .block.is-past { opacity: 0.7; transform: none; }
+  .chain.is-live .block.is-on { opacity: 1; transform: none; border-color: var(--accent); }
+  .chain.is-live .block.is-on .block__hash { color: var(--accent); }
+
+  @media (max-height: 700px) {
+    .chain__stage { gap: 24px; }
+    .chain__lede { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .block, .block__hash { transition: none; }
+  }
+</style>
