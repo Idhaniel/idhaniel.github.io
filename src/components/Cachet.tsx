@@ -1,5 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import './Cachet.css';
+import { Reveal, Split, useInView } from './reveal';
+
+// Counts from 0 to `to` once `go` turns true.
+function useCount(to: number, go: boolean) {
+  const [n, setN] = useState(to); // final value in the static HTML
+  useEffect(() => {
+    if (!go) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) { setN(to); return; }
+    let raf = 0;
+    const start = performance.now();
+    const tick = (t: number) => {
+      const k = Math.min(1, (t - start) / 1200);
+      setN(Math.round(to * (1 - Math.pow(1 - k, 3))));
+      if (k < 1) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [go, to]);
+  return n;
+}
 
 type Item = { v: string; exp: number | null };
 type Line = { kind: 'in' | 'out'; text: string };
@@ -80,6 +100,10 @@ export default function Cachet() {
   const [lastKey, setLastKey] = useState('session:42');
   const [now, setNow] = useState(() => Date.now());
   const logRef = useRef<HTMLDivElement>(null);
+  const [benchRef, benchIn] = useInView<HTMLDivElement>();
+  const [termRef, termIn] = useInView<HTMLDivElement>();
+  const setOps = useCount(77, benchIn);
+  const getOps = useCount(59, benchIn);
 
   // Tick while any key has an expiry, so TTLs count down and keys vanish on time.
   const hasExpiry = Object.values(store).some((i) => i.exp != null);
@@ -122,21 +146,24 @@ export default function Cachet() {
           <span className="chip">02 / 04</span>
           <span>Personal project</span>
         </p>
-        <h2 id="cachet-title" className="cachet__title">A small Redis, to see how one works</h2>
+        <Split id="cachet-title" className="cachet__title" text="A small Redis, to see how one works" />
+        <Reveal className="cachet__more" delay={1}>
         <p className="cachet__body">
           Cachet is a key-value store I wrote in Go while learning it. It speaks
           the Redis protocol over TCP, splits keys across eight locked shards,
           and expires or evicts keys when memory runs short.
         </p>
 
-        <div className="bench">
+        </Reveal>
+
+        <div ref={benchRef} className={`bench${benchIn ? ' is-in' : ''}`}>
           <div className="bench__row">
-            <div className="bench__label"><span>SET</span><span className="num">77k+ ops/sec</span></div>
-            <div className="bench__track"><div className="bench__bar" style={{ transform: 'scaleX(1)' }} /></div>
+            <div className="bench__label"><span>SET</span><span className="num">{setOps}k+ ops/sec</span></div>
+            <div className="bench__track"><div className="bench__bar" style={{ ['--v' as string]: 1 }} /></div>
           </div>
           <div className="bench__row">
-            <div className="bench__label"><span>GET</span><span className="num">59k+ ops/sec</span></div>
-            <div className="bench__track"><div className="bench__bar" style={{ transform: 'scaleX(0.77)' }} /></div>
+            <div className="bench__label"><span>GET</span><span className="num">{getOps}k+ ops/sec</span></div>
+            <div className="bench__track"><div className="bench__bar" style={{ ['--v' as string]: 0.77 }} /></div>
           </div>
           <p className="bench__note">redis-benchmark, 50 clients</p>
         </div>
@@ -144,7 +171,7 @@ export default function Cachet() {
         <a className="cachet__link" href="https://github.com/Idhaniel/cachet">Source on GitHub</a>
       </div>
 
-      <div className="term">
+      <div ref={termRef} className={`term${termIn ? ' is-in' : ''}`} data-rreveal="zoom">
         <div className="term__log" ref={logRef} aria-live="polite">
           {lines.map((l, i) => (
             <div key={i} className={`term__line term__line--${l.kind}`}>

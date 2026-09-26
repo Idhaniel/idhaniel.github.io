@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMotionValueEvent, useScroll } from 'motion/react';
 import './Ledger.css';
+import { Reveal, Split, useInView } from './reveal';
 
 type Line = { account: string; dr?: number; cr?: number };
 type Entry = { memo: string; lines: Line[] };
@@ -25,6 +26,7 @@ export default function Ledger() {
   const timer = useRef<number | undefined>(undefined);
   const [mode, setMode] = useState<Mode>('button');
   const [stage, setStage] = useState(0);
+  const [panelRef, panelIn] = useInView<HTMLDivElement>();
 
   // Pin and scroll-drive only on large screens with motion allowed.
   useEffect(() => {
@@ -107,7 +109,8 @@ export default function Ledger() {
               <span className="chip">01 / 04</span>
               <span>Selected work</span>
             </p>
-            <h2 id="ledger-title" className="ledger__title">A wallet that always balances</h2>
+            <Split id="ledger-title" className="ledger__title" text="A wallet that always balances" />
+            <Reveal className="ledger__more" delay={1}>
             <p className="ledger__body">
               The wallet behind a loan platform for investors and borrowers at
               Today’s Solution. Every naira moves as a matched debit and credit,
@@ -118,6 +121,7 @@ export default function Ledger() {
                 <li key={t}>{t}</li>
               ))}
             </ul>
+            </Reveal>
           </div>
 
           {mode === 'button' && (
@@ -132,7 +136,7 @@ export default function Ledger() {
           )}
         </div>
 
-        <div className="ledger__panel">
+        <div ref={panelRef} className={`ledger__panel${panelIn ? ' is-in' : ''}`} data-rreveal="zoom">
           <div className="beam" aria-hidden="true">
             <div className="beam__bar" style={{ transform: `rotate(${tilt}deg)` }}>
               <div className="beam__sides">

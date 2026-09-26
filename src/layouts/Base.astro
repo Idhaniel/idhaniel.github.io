@@ -17,15 +17,17 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <meta name="theme-color" content="#141719" />
+    <meta name="theme-color" content="#0c100e" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <script is:inline>document.documentElement.classList.add('js')</script>
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site)} />
   </head>
   <body>
     <slot />
     <script>
       import Lenis from 'lenis';
+      import '../scripts/motion';
       // Smooth scroll, off when the visitor asks for reduced motion.
       if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const lenis = new Lenis({ lerp: 0.1, anchors: true });

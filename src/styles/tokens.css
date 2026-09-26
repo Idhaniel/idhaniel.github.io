@@ -1,18 +1,19 @@
 /* Design tokens. Source of truth: DESIGN.md. Components use these, never raw hex. */
 :root {
-  /* Color */
-  --ink: #141719;
-  --plate: #1b1f22;
-  --well: #0f1214;
-  --rule: #262b2e;
-  --rule-strong: #2b3034;
-  --edge: #3a4044;
-  --bone: #e4e1d9;
-  --stone: #c7c5bf;
-  --ash: #8e9296;
-  --brass: #b39c6c;
-  --brass-hover: color-mix(in srgb, var(--brass) 94%, black);
-  --on-brass: var(--ink);
+  /* Color: "link lights", the green and amber LEDs on a network port. */
+  --ink: #0c100e;
+  --plate: #141a17;
+  --well: #080b0a;
+  --rule: #1f2723;
+  --rule-strong: #28312c;
+  --edge: #36413b;
+  --bone: #eef1e8;
+  --stone: #c8cec4;
+  --ash: #8f9891;
+  --accent: #c4f04a;       /* link-up green */
+  --accent-hover: color-mix(in srgb, var(--accent) 88%, white);
+  --on-accent: var(--ink);
+  --amber: #ffb547;        /* activity amber */
 
   /* Type */
   --font-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;

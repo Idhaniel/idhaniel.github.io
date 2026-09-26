@@ -17,7 +17,7 @@
 .num { font-family: var(--font-mono); }
 
 /* Copy */
-.cachet__copy { display: flex; flex-direction: column; gap: 20px; }
+.cachet__copy, .cachet__more { display: flex; flex-direction: column; gap: 20px; }
 .cachet__head {
   margin: 0;
   display: flex;
@@ -49,7 +49,7 @@
   min-height: 0;
   padding-block: 4px;
 }
-.cachet__link:hover { border-color: var(--brass); }
+.cachet__link:hover { border-color: var(--accent); }
 
 /* Benchmark bars */
 .bench { display: flex; flex-direction: column; gap: 14px; max-width: 420px; padding-top: 8px; }
@@ -59,9 +59,16 @@
 .bench__track { height: 6px; background: var(--plate); border-radius: var(--radius-bar); overflow: hidden; }
 .bench__bar {
   height: 100%;
-  background: var(--brass);
+  background: var(--accent);
   border-radius: var(--radius-bar);
   transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 1200ms var(--ease);
+}
+.bench__row:nth-child(2) .bench__bar { transition-delay: 150ms; }
+.bench.is-in .bench__bar { transform: scaleX(var(--v)); }
+@media (prefers-reduced-motion: reduce) {
+  .bench__bar { transform: scaleX(var(--v)); transition: none; }
 }
 .bench__note { margin: 0; font-size: 14px; color: var(--ash); }
 
@@ -107,7 +114,7 @@
   border-top: 1px solid var(--rule);
   padding-top: 14px;
 }
-.term__input .term__prompt { color: var(--brass); }
+.term__input .term__prompt { color: var(--accent); }
 .term__input input {
   flex-grow: 1;
   min-width: 0;
@@ -120,7 +127,7 @@
   outline: none;
 }
 .term__input input::placeholder { color: var(--ash); opacity: 0.6; }
-.term__input:focus-within { border-top-color: var(--brass); }
+.term__input:focus-within { border-top-color: var(--accent); }
 .term__input button {
   font: inherit;
   font-size: var(--text-small);
@@ -141,7 +148,7 @@
   cursor: pointer;
   transition: border-color var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease);
 }
-.term__tries button:hover { border-color: var(--brass); color: var(--bone); }
+.term__tries button:hover { border-color: var(--accent); color: var(--bone); }
 
 .term__foot {
   display: flex;
@@ -163,7 +170,7 @@
   font-size: 12px;
   transition: background-color var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease);
 }
-.shard.is-on { background: var(--brass); color: var(--on-brass); }
+.shard.is-on { background: var(--accent); color: var(--on-accent); }
 
 .keys {
   list-style: none;

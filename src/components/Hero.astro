@@ -4,9 +4,11 @@ import NetworkBackdrop from './NetworkBackdrop.astro';
 import photo from '../assets/daniel.jpg';
 
 const email = 'danieluwanduc@gmail.com';
+const first = 'Daniel'.split('');
+const last = 'Uwandu'.split('');
 ---
 <div class="hero-wrap">
-  <NetworkBackdrop class="hero-net" />
+  <div class="hero-bg" data-parallax="0.35"><NetworkBackdrop class="hero-net" /></div>
 
   <header class="hero container">
     <div class="bar">
@@ -19,12 +21,13 @@ const email = 'danieluwanduc@gmail.com';
       </nav>
     </div>
 
-    <div class="body">
+    <div class="body" data-hero>
       <div class="top">
-        <h1 class="name">
-          <span class="line"><span>Daniel</span></span>
-          <span class="line"><span>Uwandu</span></span>
+        <h1 class="name" aria-label="Daniel Uwandu">
+          <span class="line" aria-hidden="true">{first.map((c, i) => <span class="ch" style={`--i: ${i}`}>{c}</span>)}</span>
+          <span class="line" aria-hidden="true">{last.map((c, i) => <span class="ch" style={`--i: ${i + 3}`}>{c}</span>)}</span>
         </h1>
+        <div class="photo-frame">
         <Image
           class="photo"
           src={photo}
@@ -33,6 +36,7 @@ const email = 'danieluwanduc@gmail.com';
           sizes="(min-width: 900px) 300px, 40vw"
           loading="eager"
         />
+        </div>
       </div>
 
       <div class="meta">
@@ -65,6 +69,7 @@ const email = 'danieluwanduc@gmail.com';
     overflow: hidden;
   }
   /* The map sits behind everything, strongest top right, gone by the bottom. */
+  .hero-bg { position: absolute; inset: 0; }
   .hero-wrap :global(.hero-net) {
     -webkit-mask-image: radial-gradient(120% 90% at 85% 20%, black 20%, transparent 75%);
     mask-image: radial-gradient(120% 90% at 85% 20%, black 20%, transparent 75%);
@@ -136,16 +141,20 @@ const email = 'danieluwanduc@gmail.com';
     padding-bottom: 0.06em;
     margin-bottom: -0.06em;
   }
-  .line > span { display: block; }
+  .ch { display: inline-block; }
 
+  .photo-frame {
+    width: min(42vw, 180px);
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    border-radius: var(--radius-panel);
+  }
   .photo {
     display: block;
-    width: min(42vw, 180px);
-    height: auto;
-    aspect-ratio: 4 / 5;
+    width: 100%;
+    height: 100%;
     object-fit: cover;
-    border-radius: var(--radius-panel);
-    filter: grayscale(0.35) contrast(1.02);
+    filter: grayscale(0.3) contrast(1.03);
   }
 
   .meta {
@@ -179,7 +188,7 @@ const email = 'danieluwanduc@gmail.com';
   .facts dd { margin: 0; }
   .links { display: flex; flex-wrap: wrap; gap: 4px 24px; }
   .links a { border-bottom: 1px solid var(--edge); }
-  .links a:hover { border-color: var(--brass); }
+  .links a:hover { border-color: var(--accent); }
 
   @media (max-width: 719px) {
     .nav { width: 100%; justify-content: space-between; gap: 4px 16px; }
@@ -192,23 +201,38 @@ const email = 'danieluwanduc@gmail.com';
       align-items: flex-end;
       justify-content: space-between;
     }
-    .photo { width: clamp(220px, 21vw, 300px); }
+    .photo-frame { width: clamp(220px, 21vw, 300px); }
     .lede { grid-column: 1 / span 6; }
     .facts { grid-column: 8 / span 5; grid-template-columns: 104px 1fr; row-gap: 12px; }
   }
 
   /* The one page-load moment: name rises line by line, then the rest fades in. */
   @media (prefers-reduced-motion: no-preference) {
-    .line > span {
-      transform: translateY(105%);
-      animation: rise var(--dur-reveal) var(--ease) forwards;
+    .ch {
+      transform: translateY(110%) rotate(8deg);
+      transform-origin: 0 100%;
+      animation: rise 900ms var(--ease) forwards;
+      animation-delay: calc(150ms + var(--i) * 45ms);
     }
-    .line:nth-child(2) > span { animation-delay: 80ms; }
-    .bar, .meta, .photo {
+    .photo-frame {
+      clip-path: inset(100% 0 0 0 round var(--radius-panel));
+      animation: wipe 1100ms var(--ease) 350ms forwards;
+    }
+    .photo {
+      transform: scale(1.2);
+      animation: settle 1400ms var(--ease) 350ms forwards;
+    }
+    .bar, .meta {
       opacity: 0;
-      animation: fade var(--dur-reveal) var(--ease) 400ms forwards;
+      animation: fade 900ms var(--ease) 700ms forwards;
+    }
+    .hero-bg {
+      opacity: 0;
+      animation: fade 1600ms var(--ease) 200ms forwards;
     }
   }
-  @keyframes rise { to { transform: translateY(0); } }
+  @keyframes rise { to { transform: none; } }
+  @keyframes wipe { to { clip-path: inset(0 0 0 0 round var(--radius-panel)); } }
+  @keyframes settle { to { transform: none; } }
   @keyframes fade { to { opacity: 1; } }
 </style>

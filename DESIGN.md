@@ -12,39 +12,27 @@ Audience: engineering managers, senior engineers, recruiters. They skim first, t
 
 The feel: calm, dark, precise. Apple-level restraint in spacing and type, with Mercury's quiet dark surfaces and Integrated Biosciences' big type and hairline structure. Dull, not dead.
 
-## 2. Color (60-30-10)
+## 2. Color: "link lights"
 
-| Role | Name | Hex | Share |
-|---|---|---|---|
-| Canvas | Ink | `#141719` | 60% |
-| Raised surface (panels) | Plate | `#1b1f22` | 30% (with text + rules) |
-| Deep surface (terminal) | Well | `#0f1214` | part of 30% |
-| Hairline rule | Rule | `#262b2e` / `#2b3034` | part of 30% |
-| Control outline | Edge | `#3a4044` | part of 30% |
-| Primary text | Bone | `#e4e1d9` | part of 30% |
-| Secondary text | Stone | `#c7c5bf` | part of 30% |
-| Muted text / labels | Ash | `#8e9296` | part of 30% |
-| Accent | Brass | `#b39c6c` | 10%, strictly |
+The palette comes from the LEDs on a network port: link-up green and activity amber on a green-tinted black. (Replaced the earlier brass palette, which read as generic.)
 
-Brass is used for exactly these things:
-- the one primary button per view
-- "balanced" / success state text
-- the active shard, focus rings, and benchmark bars
-- the ledger pivot and the T-account rule on the OG image
+| Role | Token | Hex |
+|---|---|---|
+| Canvas | `--ink` | `#0c100e` |
+| Raised surface | `--plate` | `#141a17` |
+| Deep surface (terminal) | `--well` | `#080b0a` |
+| Hairlines | `--rule` / `--rule-strong` | `#1f2723` / `#28312c` |
+| Control outline | `--edge` | `#36413b` |
+| Primary text | `--bone` | `#eef1e8` |
+| Secondary text | `--stone` | `#c8cec4` |
+| Muted text | `--ash` | `#8f9891` |
+| Accent | `--accent` | `#c4f04a` (link-up green) |
+| Second accent | `--amber` | `#ffb547` (activity amber) |
 
-Brass is never used for:
-- headings
-- large fills
-- section backgrounds
-- gradients
-
-Alternates tested in the mockup: olive `#8a9577`, steel `#7b8c9a`. Brass is the pick.
-
-Contrast floors:
-- Body text 4.5:1 minimum. Ash on Ink passes; don't go darker than Ash for readable text.
-- Text on brass is Ink `#141719`.
-
-Theme: dark only for v1. Expose all colors as CSS custom properties so a light theme can be added later without touching components.
+- Accent: primary buttons, success/balanced states, active shard, focus rings, benchmark bars, network packets and hovered nodes.
+- Amber: only for the second kind of network packet and "in progress" states. Never text on ink at small sizes.
+- No gradients, no purple/blue.
+- Text on accent is `--ink`.
 
 ## 3. Type
 
@@ -125,32 +113,26 @@ The chapter order is a sequence, so a small "Work 1 of 4" style indicator is all
 
 ## 6. Motion
 
-Library choices:
-- **Motion** (`motion` package): React islands, `useScroll`, `useTransform`
-- **Lenis**: smooth scroll, lerp around 0.1
-- **GSAP**: not used, to keep one mental model
+Daniel wants the site to feel alive, closer to Apple's product pages. Motion is part of the design, not an accent.
 
-Easing and timing:
-- Standard ease: `cubic-bezier(.2,.8,.2,1)`
-- Durations: 250ms for UI feedback, 650ms for reveals and beam, never over 900ms
+Libraries: Motion (`motion`) for React islands, Lenis for smooth scroll (lerp 0.1), plain scroll/IntersectionObserver code in `src/scripts/motion.ts` for Astro sections. React islands use `src/components/reveal.tsx` (`Split`, `Reveal`, `useInView`) so React owns its own classes. No GSAP.
+
+Easing `cubic-bezier(.2,.8,.2,1)`. 250ms for UI feedback; 900–1400ms for reveals.
 
 What moves:
-- **One page-load moment.** The hero name rises into place with a clip reveal, line by line, 80ms stagger. The nav and lede fade in after. That is the only unprompted animation.
-- **Scroll-driven motion is reserved for the story, ledger and supply-chain sections.** Everything else is static until interacted with.
-- **Ambient:** the network map pulses (opacity only, one link at a time). Nothing else moves on its own.
-- **Interaction feedback:**
-  - Buttons darken 6% on hover.
-  - Links shift to brass on hover.
-  - Focus rings are 2px brass with a 3px offset.
+- **Load:** hero name rises letter by letter, the photo wipes up and settles from 1.2x, the network map fades in, nav and meta fade after.
+- **Hero exit:** as you scroll past, the hero content drifts up, shrinks to 0.92 and fades; the network map parallaxes slower than the page.
+- **Network map:** packets travel along routes (green and amber), links flash as packets hop, and on devices with a mouse the nodes near the cursor light up and dashed links join the cursor to its three nearest nodes.
+- **Section headings:** words rise into place on enter (`data-split` / `Split`).
+- **Body copy:** fades and lifts in on enter (`data-reveal` / `Reveal`).
+- **Panels (ledger, terminal):** zoom up from 0.88 with a slight tilt as they enter.
+- **Numbers:** benchmark figures count up and bars grow when they come into view.
+- **Scroll-driven:** story statements (word-by-word lighting), the ledger (entries post as you scroll), supply chain (horizontal).
+- **Interaction:** buttons lighten on hover, links go accent, focus rings 2px accent with 3px offset.
 
-What does not move:
-- No fade-up on every section.
-- No parallax on text.
-- No cursor followers, particles, marquees, or magnetic buttons.
-
-Accessibility and performance:
-- `prefers-reduced-motion: reduce` disables Lenis, disables pinning, and shows the final states.
-- Animate only `transform` and `opacity`.
+Rules:
+- Animate transform and opacity (clip-path allowed for the photo wipe). No layout animation.
+- `prefers-reduced-motion: reduce` disables Lenis, pinning, packets and all reveals, and shows final states.
 - Target 60fps on a mid-range Android phone.
 
 ## 7. Tech
@@ -199,7 +181,6 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 - Arrows appended to every link
 - Middle-dot meta strings
 - Mono type used for decoration
-- Animating every section on enter
 
 ## 11. Open items (from Daniel)
 

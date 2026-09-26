@@ -49,7 +49,7 @@
   justify-content: center;
   gap: 32px;
 }
-.ledger__text { display: flex; flex-direction: column; gap: 20px; }
+.ledger__text, .ledger__more { display: flex; flex-direction: column; gap: 20px; }
 .ledger__head {
   margin: 0;
   display: flex;
@@ -98,8 +98,8 @@
   cursor: pointer;
   background-color: transparent;
 }
-.ledger__buttons .pill--primary { background: var(--brass); border: 0; }
-.ledger__buttons .pill--primary:hover:not(:disabled) { background: var(--brass-hover); }
+.ledger__buttons .pill--primary { background: var(--accent); border: 0; }
+.ledger__buttons .pill--primary:hover:not(:disabled) { background: var(--accent-hover); }
 .ledger__buttons button:disabled { opacity: 0.45; cursor: default; }
 
 /* Panel */
@@ -140,7 +140,7 @@
 .beam__amount { font-family: var(--font-mono); font-size: clamp(14px, 1.3vw, 17px); }
 .beam__rule { height: 2px; background: var(--bone); }
 .beam__pivot { display: block; }
-.beam__pivot path { stroke: var(--brass); }
+.beam__pivot path { stroke: var(--accent); }
 
 .ledger__status {
   margin: 0;
@@ -149,7 +149,7 @@
   color: var(--ash);
   transition: color var(--dur-ui) var(--ease);
 }
-.ledger__status.is-balanced { color: var(--brass); }
+.ledger__status.is-balanced { color: var(--accent); }
 
 /* Journal */
 .journal { display: flex; flex-direction: column; min-height: 0; flex-grow: 1; }
