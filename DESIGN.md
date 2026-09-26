@@ -101,6 +101,7 @@ Type rules:
    - Left column: story and benchmark bars (SET 77k+, GET 59k+, 50 clients).
    - Right column: a working in-browser terminal (SET/GET/DEL/EXPIRE/TTL/PING, with a real TTL countdown) and an 8-shard strip that lights the shard for the last key.
    - Suggestion chips run example commands.
+   - Framed as a personal learning project ("02 / 04", "Personal project", "A small Redis, to see how one works"). A key list under the shard strip shows each key's live TTL. Links to github.com/Idhaniel/cachet.
 4. **Chapter — Fish supply chain.**
    - A pinned horizontal scroll with five stops: farm, processor, distributor, retailer, consumer.
    - Each stop is written as a "block": the event, a short hash, and an attached IoT reading (temperature, humidity).

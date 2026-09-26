@@ -59,6 +59,17 @@ a:hover { color: var(--brass); }
 .pill--ghost { border: 1px solid var(--edge); color: var(--bone); }
 .pill--ghost:hover { border-color: var(--brass); color: var(--brass); }
 
+/* Small outlined counter, e.g. "02 / 04". */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
