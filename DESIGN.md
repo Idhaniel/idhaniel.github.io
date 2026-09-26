@@ -6,7 +6,7 @@ Mockup canvas (reference visuals): https://claude.ai/artifact/2hySDbeqhjhVuk7bEe
 
 ## 1. What this site is
 
-A portfolio for a backend and systems developer whose work is about correctness: ledgers that balance, a key-value store that stays correct under load, supply-chain records that can't be rewritten. The site proves that by letting visitors *use* small versions of the work, rather than listing it.
+A portfolio for a general backend developer: whatever the product is, Daniel builds the server side. The four chapters are examples across different domains (finance, infrastructure, supply chain, e-commerce), not a specialism. Don't frame him as a fintech or Go specialist. The site proves that by letting visitors *use* small versions of the work, rather than listing it.
 
 Audience: engineering managers, senior engineers, recruiters. They skim first, then go deep on one project. The page must reward both.
 
@@ -87,7 +87,7 @@ Type rules:
 
 ## 5. Page structure (scroll story)
 
-1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Also into / Elsewhere). "Also into" is computer networking. No photo in the hero. No typing effect.
+1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Elsewhere). No photo in the hero. No typing effect.
 2. **Chapter — The ledger (Today's Solution).** The signature moment.
    - Left column: meta, headline "Every naira has two sides.", and body text.
    - Right column: a pinned panel with a balance beam, a journal, and totals.
@@ -175,6 +175,8 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 
 - First person, plain verbs, specific numbers.
 - Don't oversell. State what was built and what it does; let the numbers speak. No superlatives.
+- Cachet is a learning project in Go, and the copy should say so. Don't present Daniel as a Go expert.
+- Computer networking is an interest. It goes in the stack list, not as a headline fact.
 - Banned words: passionate, leverage, cutting-edge, seamless, innovative, "I love to", journey.
 - No emoji.
 - Buttons say what they do ("Email me", "Post next entry", "Run").
