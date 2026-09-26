@@ -36,10 +36,7 @@ const h = (type, style, children) => ({ type, props: children === undefined ? { 
 const tree = h('div', { width: W, height: H, display: 'flex', position: 'relative', background: c.ink, color: c.bone, fontFamily: 'Schibsted' }, [
   { type: 'img', props: { src: `data:image/svg+xml;base64,${Buffer.from(net).toString('base64')}`, width: W, height: H, style: { position: 'absolute', left: 0, top: 0 } } },
   h('div', { display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '64px 72px', width: '100%' }, [
-    h('div', { display: 'flex', alignItems: 'center', gap: 14, fontSize: 26, color: c.stone }, [
-      h('div', { display: 'flex', width: 12, height: 12, borderRadius: 6, background: c.accent }),
-      'Software developer, Lagos',
-    ]),
+    h('div', { display: 'flex', fontSize: 26, color: c.stone }, ['Software developer, Lagos']),
     h('div', { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }, [
       h('div', { display: 'flex', flexDirection: 'column', gap: 28 }, [
         h('div', { display: 'flex', flexDirection: 'column', fontSize: 128, lineHeight: 0.9, letterSpacing: '-0.045em' }, [h('div', { display: 'flex' }, ['Daniel']), h('div', { display: 'flex' }, ['Uwandu'])]),
