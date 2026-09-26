@@ -1,10 +1,12 @@
 ---
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
+import Story from '../components/Story.astro';
 import Ledger from '../components/Ledger.tsx';
 ---
 <Base>
   <Hero />
+  <Story />
   <main id="work">
     <Ledger client:load />
   </main>

@@ -53,10 +53,11 @@ Theme: dark only for v1. Expose all colors as CSS custom properties so a light t
 
 | Token | Size / line-height | Weight | Tracking | Use |
 |---|---|---|---|---|
-| display | min(22vw, 120px) on phones, clamp(96px, 13vw, 188px) from 720px / 0.88 | 400 | -0.048em | Hero name only |
-| h2 | clamp(40px, 5vw, 68px) / 1.0 | 400 | -0.035em | Chapter headlines |
-| lede | clamp(21px, 2vw, 28px) / 1.32 | 400 (Stone) | -0.012em | Hero statement |
-| body-lg | 19px / 1.55 | 400 | 0 | Chapter body |
+| display | min(19vw, 96px) on phones, clamp(84px, 9.5vw, 136px) from 720px / 0.88 | 400 | -0.048em | Hero name only |
+| h2 | clamp(30px, 3.4vw, 46px) / 1.0 | 400 | -0.035em | Chapter headlines |
+| statement | clamp(24px, 2.8vw, 40px) / 1.18 | 400 | -0.022em | Story statements |
+| lede | clamp(18px, 1.5vw, 21px) / 1.32 | 400 (Stone) | -0.012em | Hero statement |
+| body-lg | 17px / 1.55 | 400 | 0 | Chapter body |
 | body | 16px / 1.55 | 400 | 0 | Supporting copy |
 | small | 14–15px / 1.45 | 400 | 0 | Meta, captions |
 | data | 14–17px / 1.5 | 400 | 0 | Mono amounts and commands |
@@ -87,9 +88,11 @@ Type rules:
 
 ## 5. Page structure (scroll story)
 
-1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Available / Elsewhere). No photo in the hero. No typing effect.
+1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Available / Elsewhere). Daniel's photo sits to the right of the name (under the nav on phones), 18px radius, mild grayscale. A faint network map (nodes, hairline links, the odd pulse hopping along a route) fills the background, strongest top right. No typing effect.
+1b. **Story.** A pinned section with three short first-person statements, shown one at a time with an "01 / 03" counter and a hairline progress bar. Words brighten one by one as you scroll (after Integrated Biosciences). The network map sits faintly behind it. Reduced motion or no JS: the three statements stacked and fully lit.
 2. **Chapter — The ledger (Today's Solution).** The signature moment.
-   - Left column: meta, headline "Every naira has two sides.", and body text.
+   - Left column: "01 / 04" chip with "Selected work", headline "A wallet that always balances", one or two sentences, and stack chips. No instructions about how to use the demo; the UI should explain itself.
+   - Faint ledger-paper rules sit behind the chapter.
    - Right column: a pinned panel with a balance beam, a journal, and totals.
    - Scroll behavior: as the user scrolls through a ~300vh section, each of the four example entries posts. The debit lands first, the beam tilts, and the status reads "Out by ₦X". The credit then lands and the beam settles with "Balanced."
    - Reduced motion: all four entries are shown posted, with no beam tilt.
@@ -132,7 +135,8 @@ Easing and timing:
 
 What moves:
 - **One page-load moment.** The hero name rises into place with a clip reveal, line by line, 80ms stagger. The nav and lede fade in after. That is the only unprompted animation.
-- **Scroll-driven motion is reserved for the ledger and supply-chain chapters.** Everything else is static until interacted with.
+- **Scroll-driven motion is reserved for the story, ledger and supply-chain sections.** Everything else is static until interacted with.
+- **Ambient:** the network map pulses (opacity only, one link at a time). Nothing else moves on its own.
 - **Interaction feedback:**
   - Buttons darken 6% on hover.
   - Links shift to brass on hover.
@@ -182,7 +186,8 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 - Banned words: passionate, leverage, cutting-edge, seamless, innovative, "I love to", journey.
 - No emoji.
 - Buttons say what they do ("Email me", "Post next entry", "Run").
-- The ledger amounts are labelled as example entries. Never imply they are real client data.
+- The ledger amounts are labelled as example entries (the journal's first column header says "Example entries"). Never imply they are real client data.
+- Keep UI text short. Don't explain what buttons do or how to scroll.
 
 ## 10. Things we will not do (AI tells)
 

@@ -2,6 +2,17 @@
   position: relative;
   padding-block: var(--chapter-gap) 0;
 }
+.ledger::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(to bottom, transparent 0 39px, var(--rule) 39px 40px);
+  opacity: 0.35;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 30%, black 70%, transparent);
+}
+.ledger__stage { position: relative; }
 
 .ledger__stage {
   display: grid;
@@ -35,11 +46,45 @@
 .ledger__copy {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   gap: 32px;
 }
-.ledger__text { display: flex; flex-direction: column; gap: 24px; }
-.ledger__meta { margin: 0; font-size: var(--text-small); color: var(--ash); }
+.ledger__text { display: flex; flex-direction: column; gap: 20px; }
+.ledger__head {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 14px;
+  color: var(--ash);
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--edge);
+  border-radius: var(--radius-pill);
+  font-variant-numeric: tabular-nums;
+}
+.ledger__stack {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ledger__stack li {
+  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  padding: 0 12px;
+  border-radius: var(--radius-pill);
+  background: var(--plate);
+  font-size: 13px;
+  color: var(--stone);
+}
 .ledger__title {
   margin: 0;
   font-size: var(--text-h2);
@@ -49,19 +94,11 @@
 }
 .ledger__body {
   margin: 0;
-  max-width: 34em;
+  max-width: 30em;
   font-size: var(--text-body-lg);
   line-height: var(--lh-body);
   color: var(--stone);
 }
-.ledger__small {
-  margin: 0;
-  max-width: 34em;
-  font-size: var(--text-body);
-  line-height: var(--lh-body);
-  color: var(--ash);
-}
-.ledger__controls { display: flex; flex-direction: column; gap: 14px; }
 .ledger__buttons { display: flex; flex-wrap: wrap; gap: 12px; }
 .ledger__buttons button {
   font: inherit;
@@ -73,7 +110,6 @@
 .ledger__buttons .pill--primary { background: var(--brass); border: 0; }
 .ledger__buttons .pill--primary:hover:not(:disabled) { background: var(--brass-hover); }
 .ledger__buttons button:disabled { opacity: 0.45; cursor: default; }
-.ledger__note { margin: 0; font-size: 14px; color: var(--ash); }
 
 /* Panel */
 .ledger__panel {

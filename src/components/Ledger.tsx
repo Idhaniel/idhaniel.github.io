@@ -103,37 +103,33 @@ export default function Ledger() {
       <div className="ledger__stage container">
         <div className="ledger__copy">
           <div className="ledger__text">
-            <p className="ledger__meta">Today’s Solution, 2025 to now</p>
-            <h2 id="ledger-title" className="ledger__title">Every naira has two sides.</h2>
+            <p className="ledger__head">
+              <span className="chip">01 / 04</span>
+              <span>Selected work</span>
+            </p>
+            <h2 id="ledger-title" className="ledger__title">A wallet that always balances</h2>
             <p className="ledger__body">
-              I built the wallet behind a loan platform for investors and
-              borrowers. It runs on a double-entry ledger: an entry only posts
-              when its debits and credits match, so every transaction can be
-              traced from start to end.
+              The wallet behind a loan platform for investors and borrowers at
+              Today’s Solution. Every naira moves as a matched debit and credit,
+              so the books can’t drift.
             </p>
-            <p className="ledger__small">
-              C# and ASP.NET Core on the company’s ERP framework, SQL Server with
-              Entity Framework, role-based access, and REST APIs for a React
-              portal. I also deploy and support it on IIS.
-            </p>
+            <ul className="ledger__stack" aria-label="Built with">
+              {['C#', 'ASP.NET Core', 'SQL Server', 'Entity Framework', 'React', 'IIS'].map((t) => (
+                <li key={t}>{t}</li>
+              ))}
+            </ul>
           </div>
 
-          <div className="ledger__controls">
-            {mode === 'button' && (
-              <div className="ledger__buttons">
-                <button type="button" className="pill pill--primary" onClick={postNext} disabled={done}>
-                  {done ? 'All entries posted' : 'Post next entry'}
-                </button>
-                <button type="button" className="pill pill--ghost" onClick={reset}>
-                  Start over
-                </button>
-              </div>
-            )}
-            <p className="ledger__note">
-              {mode === 'scroll' && 'Scroll to post each entry. '}
-              Four example entries, not client data.
-            </p>
-          </div>
+          {mode === 'button' && (
+            <div className="ledger__buttons">
+              <button type="button" className="pill pill--primary" onClick={postNext} disabled={done}>
+                {done ? 'All posted' : 'Post next entry'}
+              </button>
+              <button type="button" className="pill pill--ghost" onClick={reset}>
+                Start over
+              </button>
+            </div>
+          )}
         </div>
 
         <div className="ledger__panel">
@@ -162,7 +158,7 @@ export default function Ledger() {
 
           <div className="journal" role="table" aria-label="Journal">
             <div className="journal__row journal__head" role="row">
-              <span role="columnheader">Account</span>
+              <span role="columnheader">Example entries</span>
               <span role="columnheader">Debit</span>
               <span role="columnheader">Credit</span>
             </div>

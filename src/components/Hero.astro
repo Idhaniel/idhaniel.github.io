@@ -1,50 +1,77 @@
 ---
+import { Image } from 'astro:assets';
+import NetworkBackdrop from './NetworkBackdrop.astro';
+import photo from '../assets/daniel.jpg';
+
 const email = 'danieluwanduc@gmail.com';
 ---
-<header class="hero container">
-  <div class="bar">
-    <a class="wordmark" href="/">Daniel Uwandu</a>
-    <nav class="nav" aria-label="Primary">
-      <a href="#work">Work</a>
-      <a href="#about">About</a>
-      <a href="/resume.pdf" download="Daniel-Uwandu-CV.pdf">Download CV</a>
-      <a class="pill pill--primary" href={`mailto:${email}`}>Email me</a>
-    </nav>
-  </div>
+<div class="hero-wrap">
+  <NetworkBackdrop class="hero-net" />
 
-  <div class="body">
-    <h1 class="name">
-      <span class="line"><span>Daniel</span></span>
-      <span class="line"><span>Uwandu</span></span>
-    </h1>
-
-    <div class="meta">
-      <p class="lede">
-        Backend developer in Lagos. Most days that means C# and ASP.NET Core,
-        or TypeScript and NestJS, over SQL Server or PostgreSQL. I like to
-        understand a system all the way down, so when it breaks I already
-        have a clue where to look.
-      </p>
-
-      <dl class="facts">
-        <dt>Now</dt>
-        <dd>Software developer at Today’s Solution</dd>
-        <dt>Studied</dt>
-        <dd>Computer Engineering, University of Lagos</dd>
-        <dt>Available</dt>
-        <dd>Open to roles, remote first. Can start now.</dd>
-        <dt>Elsewhere</dt>
-        <dd class="links">
-          <a href="https://github.com/Idhaniel">GitHub</a>
-          <a href="https://linkedin.com/in/daniel-u-b79b78194">LinkedIn</a>
-        </dd>
-      </dl>
+  <header class="hero container">
+    <div class="bar">
+      <a class="wordmark" href="/">Daniel Uwandu</a>
+      <nav class="nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="/resume.pdf" download="Daniel-Uwandu-CV.pdf">Download CV</a>
+        <a class="pill pill--primary" href={`mailto:${email}`}>Email me</a>
+      </nav>
     </div>
-  </div>
-</header>
+
+    <div class="body">
+      <div class="top">
+        <h1 class="name">
+          <span class="line"><span>Daniel</span></span>
+          <span class="line"><span>Uwandu</span></span>
+        </h1>
+        <Image
+          class="photo"
+          src={photo}
+          alt="Daniel Uwandu"
+          widths={[240, 360, 480, 720]}
+          sizes="(min-width: 900px) 300px, 40vw"
+          loading="eager"
+        />
+      </div>
+
+      <div class="meta">
+        <p class="lede">
+          Backend developer in Lagos. Most days that means C# and ASP.NET Core,
+          or TypeScript and NestJS, over SQL Server or PostgreSQL.
+        </p>
+
+        <dl class="facts">
+          <dt>Now</dt>
+          <dd>Software developer at Today’s Solution</dd>
+          <dt>Studied</dt>
+          <dd>Computer Engineering, University of Lagos</dd>
+          <dt>Available</dt>
+          <dd>Open to roles, remote first. Can start now.</dd>
+          <dt>Elsewhere</dt>
+          <dd class="links">
+            <a href="https://github.com/Idhaniel">GitHub</a>
+            <a href="https://linkedin.com/in/daniel-u-b79b78194">LinkedIn</a>
+          </dd>
+        </dl>
+      </div>
+    </div>
+  </header>
+</div>
 
 <style>
+  .hero-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  /* The map sits behind everything, strongest top right, gone by the bottom. */
+  .hero-wrap :global(.hero-net) {
+    -webkit-mask-image: radial-gradient(120% 90% at 85% 20%, black 20%, transparent 75%);
+    mask-image: radial-gradient(120% 90% at 85% 20%, black 20%, transparent 75%);
+  }
+
   .hero {
+    position: relative;
     min-height: 100svh;
     display: flex;
     flex-direction: column;
@@ -57,11 +84,11 @@ const email = 'danieluwanduc@gmail.com';
     align-items: center;
     justify-content: space-between;
     gap: 8px 24px;
-    padding-block: 20px;
+    padding-block: 16px;
     border-bottom: 1px solid var(--rule);
   }
   .wordmark {
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 500;
     letter-spacing: -0.01em;
     min-height: var(--target);
@@ -80,15 +107,21 @@ const email = 'danieluwanduc@gmail.com';
     align-items: center;
   }
 
-  /* Name + meta */
+  /* Name, photo, meta */
   .body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    gap: clamp(40px, 6vw, 64px);
-    padding-top: 72px;
-    padding-bottom: clamp(40px, 6vw, 72px);
+    gap: 36px;
+    padding-top: 48px;
+    padding-bottom: clamp(40px, 6vw, 64px);
+  }
+  .top {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+    gap: 32px;
   }
   .name {
     margin: 0;
@@ -100,24 +133,33 @@ const email = 'danieluwanduc@gmail.com';
   .line {
     display: block;
     overflow: hidden;
-    /* room for descenders inside the clip */
     padding-bottom: 0.06em;
     margin-bottom: -0.06em;
   }
   .line > span { display: block; }
 
+  .photo {
+    display: block;
+    width: min(42vw, 180px);
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    border-radius: var(--radius-panel);
+    filter: grayscale(0.35) contrast(1.02);
+  }
+
   .meta {
     display: grid;
     grid-template-columns: repeat(12, minmax(0, 1fr));
     column-gap: var(--gutter);
-    row-gap: 40px;
-    padding-top: 32px;
+    row-gap: 32px;
+    padding-top: 28px;
     border-top: 1px solid var(--rule-strong);
   }
   .lede {
     grid-column: 1 / -1;
     margin: 0;
-    max-width: 30ch;
+    max-width: 34ch;
     font-size: var(--text-lede);
     line-height: var(--lh-lede);
     letter-spacing: var(--track-lede);
@@ -127,10 +169,10 @@ const email = 'danieluwanduc@gmail.com';
     grid-column: 1 / -1;
     margin: 0;
     display: grid;
-    grid-template-columns: 96px 1fr;
-    row-gap: 12px;
+    grid-template-columns: 88px 1fr;
+    row-gap: 10px;
     column-gap: 16px;
-    font-size: var(--text-body);
+    font-size: var(--text-small);
     line-height: 1.4;
   }
   .facts dt { color: var(--ash); }
@@ -139,15 +181,20 @@ const email = 'danieluwanduc@gmail.com';
   .links a { border-bottom: 1px solid var(--edge); }
   .links a:hover { border-color: var(--brass); }
 
-  /* Phone: nav drops to its own row under the wordmark */
   @media (max-width: 719px) {
     .nav { width: 100%; justify-content: space-between; gap: 4px 16px; }
     .nav .pill { padding: 0 18px; }
   }
 
   @media (min-width: 900px) {
-    .lede { grid-column: 1 / span 6; max-width: 620px; }
-    .facts { grid-column: 8 / span 5; grid-template-columns: 112px 1fr; row-gap: 16px; }
+    .top {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+    .photo { width: clamp(220px, 21vw, 300px); }
+    .lede { grid-column: 1 / span 6; }
+    .facts { grid-column: 8 / span 5; grid-template-columns: 104px 1fr; row-gap: 12px; }
   }
 
   /* The one page-load moment: name rises line by line, then the rest fades in. */
@@ -157,7 +204,7 @@ const email = 'danieluwanduc@gmail.com';
       animation: rise var(--dur-reveal) var(--ease) forwards;
     }
     .line:nth-child(2) > span { animation-delay: 80ms; }
-    .bar, .meta {
+    .bar, .meta, .photo {
       opacity: 0;
       animation: fade var(--dur-reveal) var(--ease) 400ms forwards;
     }

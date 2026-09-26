@@ -1,0 +1,146 @@
+---
+import NetworkBackdrop from './NetworkBackdrop.astro';
+
+const lines = [
+  'I build backend systems: APIs, databases, and the services in between, whatever the product happens to be.',
+  'I like to understand a system all the way down, so when it breaks I already have a clue where to look.',
+  'I’d rather remove a dependency than add one. If something breaks, I want it to be my own code.',
+];
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<section class="story" aria-label="About how I work" data-story>
+  <div class="story__stage">
+    <NetworkBackdrop seed={19} class="story-net" />
+    <div class="container story__inner">
+      <p class="story__head" aria-hidden="true">
+        <span class="story__count"><span data-story-count>01</span>{` / ${pad(lines.length)}`}</span>
+        <span class="story__track"><span class="story__fill" data-story-fill></span></span>
+      </p>
+      <div class="story__lines">
+        {lines.map((line, i) => (
+          <p class="story__line" data-story-line style={`--n: ${line.split(' ').length}`}>
+            {line.split(' ').map((word, w) => (
+              <span class="w" style={`--w: ${w}`}>{word} </span>
+            ))}
+          </p>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Pins the section and lights each statement word by word as you scroll.
+  // Without JS, or with reduced motion, the statements sit stacked and fully lit.
+  const section = document.querySelector<HTMLElement>('[data-story]');
+  if (section && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const lines = [...section.querySelectorAll<HTMLElement>('[data-story-line]')];
+    const count = section.querySelector<HTMLElement>('[data-story-count]')!;
+    const fill = section.querySelector<HTMLElement>('[data-story-fill]')!;
+    section.classList.add('is-live');
+    let queued = false;
+    const update = () => {
+      queued = false;
+      const rect = section.getBoundingClientRect();
+      const run = section.offsetHeight - innerHeight;
+      const p = Math.min(1, Math.max(0, -rect.top / run));
+      const scaled = p * lines.length;
+      const active = Math.min(lines.length - 1, Math.floor(scaled));
+      // Finish lighting a line at 70% of its slot, then hold it.
+      const local = Math.min(1, (scaled - active) / 0.7);
+      lines.forEach((line, i) => {
+        line.classList.toggle('is-active', i === active);
+        line.classList.toggle('is-past', i < active);
+        line.style.setProperty('--lp', i === active ? local.toFixed(3) : i < active ? '1' : '0');
+      });
+      count.textContent = String(active + 1).padStart(2, '0');
+      fill.style.transform = `scaleX(${p.toFixed(3)})`;
+    };
+    const onScroll = () => {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    addEventListener('resize', onScroll);
+    update();
+  }
+</script>
+
+<style>
+  .story { position: relative; }
+  .story__stage { position: relative; overflow: hidden; }
+  .story :global(.story-net) {
+    opacity: 0.8;
+    -webkit-mask-image: radial-gradient(90% 70% at 50% 50%, black 10%, transparent 70%);
+    mask-image: radial-gradient(90% 70% at 50% 50%, black 10%, transparent 70%);
+  }
+  .story__inner {
+    position: relative;
+    padding-block: var(--chapter-gap);
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+  .story__head {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+    color: var(--ash);
+  }
+  .story__count {
+    display: inline-flex;
+    align-items: center;
+    height: 32px;
+    padding: 0 14px;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius-pill);
+    font-variant-numeric: tabular-nums;
+  }
+  .story__track {
+    flex-grow: 1;
+    max-width: 240px;
+    height: 1px;
+    background: var(--rule-strong);
+  }
+  .story__fill {
+    display: block;
+    height: 1px;
+    background: var(--bone);
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .story__lines { display: flex; flex-direction: column; gap: 40px; }
+  .story__line {
+    margin: 0;
+    max-width: 22em;
+    font-size: var(--text-statement);
+    line-height: var(--lh-statement);
+    letter-spacing: var(--track-statement);
+  }
+
+  /* Live: pinned, one statement at a time, words brighten with scroll. */
+  .story.is-live { height: 320vh; }
+  .story.is-live .story__stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+  }
+  .story.is-live .story__inner {
+    height: 100%;
+    padding-block: 0;
+    justify-content: center;
+  }
+  .story.is-live .story__lines { display: grid; }
+  .story.is-live .story__line {
+    grid-area: 1 / 1;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity var(--dur-reveal) var(--ease), transform var(--dur-reveal) var(--ease);
+  }
+  .story.is-live .story__line.is-active { opacity: 1; transform: none; }
+  .story.is-live .story__line.is-past { transform: translateY(-24px); }
+  .story.is-live .w {
+    opacity: clamp(0.2, calc(var(--lp, 0) * (var(--n) + 3) - var(--w)), 1);
+  }
+</style>
