@@ -48,14 +48,14 @@ Theme: dark only for v1. Expose all colors as CSS custom properties so a light t
 
 ## 3. Type
 
-- **Hanken Grotesk** (Google Fonts), weights 300, 400, 500. Everything except data. Never bold above 500.
+- **Schibsted Grotesk**, weights 400, 500. Everything except data. Never bold above 500. (Replaced Hanken Grotesk, which read as too generic. It has no 300, so the lede uses 400 in Stone.)
 - **IBM Plex Mono**, weights 400, 500. Only for real data: currency amounts, commands, terminal output, benchmark numbers. Never for labels, nav, or decoration.
 
 | Token | Size / line-height | Weight | Tracking | Use |
 |---|---|---|---|---|
-| display | clamp(88px, 13vw, 188px) / 0.88 | 400 | -0.048em | Hero name only |
-| h2 | clamp(44px, 5vw, 68px) / 1.0 | 400 | -0.035em | Chapter headlines |
-| lede | clamp(22px, 2vw, 28px) / 1.32 | 300 | -0.012em | Hero statement |
+| display | min(22vw, 120px) on phones, clamp(96px, 13vw, 188px) from 720px / 0.88 | 400 | -0.048em | Hero name only |
+| h2 | clamp(40px, 5vw, 68px) / 1.0 | 400 | -0.035em | Chapter headlines |
+| lede | clamp(21px, 2vw, 28px) / 1.32 | 400 (Stone) | -0.012em | Hero statement |
 | body-lg | 19px / 1.55 | 400 | 0 | Chapter body |
 | body | 16px / 1.55 | 400 | 0 | Supporting copy |
 | small | 14–15px / 1.45 | 400 | 0 | Meta, captions |
@@ -79,14 +79,15 @@ Type rules:
 - **Shadows:** none. Elevation comes from Ink to Plate value steps and 1px rules.
 - **Layout:**
   - 12-column grid, 24px gutter
-  - 96px side padding on desktop, 24px on mobile
+  - Side padding: 24px under 720px, 48px from 720px, 96px from 1100px
+  - Responsive is required: every section must work from 320px wide up, with no horizontal scroll. Multi-column layouts stack to one column under 900px.
   - Content max width 1248px
 - **Section rhythm:** 160px between chapters on desktop, 96px on mobile. Keep it generous.
 - **Touch targets:** 44px minimum.
 
 ## 5. Page structure (scroll story)
 
-1. **Hero.** Small wordmark and nav (Work, About, Résumé, brass "Email me" pill). The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Elsewhere). No photo in the hero. No typing effect.
+1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Also into / Elsewhere). "Also into" is computer networking. No photo in the hero. No typing effect.
 2. **Chapter — The ledger (Today's Solution).** The signature moment.
    - Left column: meta, headline "Every naira has two sides.", and body text.
    - Right column: a pinned panel with a balance beam, a journal, and totals.
@@ -108,10 +109,10 @@ Type rules:
    - Two short paragraphs in first person, plus education (UNILAG, Computer Engineering, 2026, CGPA 4.52/5.00).
    - Optional photo, shown as a plain rectangle with an 18px radius and a mild grayscale.
 7. **Stack.**
-   - Four plain grouped lists: Languages, Backend, Data, Infrastructure.
+   - Four plain grouped lists: Languages, Backend, Data, Infrastructure and networking.
    - No logos, no percentage bars, no star ratings.
 8. **Contact.**
-   - A large "Email me" line (mailto), plus GitHub and LinkedIn.
+   - A large "Email me" line (mailto: danieluwanduc@gmail.com), a "Download CV" pill (`/resume.pdf`), plus GitHub and LinkedIn.
    - Footer with location and time zone, written as a sentence ("Lagos, Nigeria. GMT+1.").
 
 The chapter order is a sequence, so a small "Work 1 of 4" style indicator is allowed in a sticky chapter nav. Nowhere else.
@@ -173,6 +174,7 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 ## 9. Copy rules
 
 - First person, plain verbs, specific numbers.
+- Don't oversell. State what was built and what it does; let the numbers speak. No superlatives.
 - Banned words: passionate, leverage, cutting-edge, seamless, innovative, "I love to", journey.
 - No emoji.
 - Buttons say what they do ("Email me", "Post next entry", "Run").
