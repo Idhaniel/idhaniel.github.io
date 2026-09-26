@@ -24,5 +24,14 @@ const {
   </head>
   <body>
     <slot />
+    <script>
+      import Lenis from 'lenis';
+      // Smooth scroll, off when the visitor asks for reduced motion.
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const lenis = new Lenis({ lerp: 0.1, anchors: true });
+        const raf = (t: number) => { lenis.raf(t); requestAnimationFrame(raf); };
+        requestAnimationFrame(raf);
+      }
+    </script>
   </body>
 </html>

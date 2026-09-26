@@ -93,6 +93,7 @@ Type rules:
    - Right column: a pinned panel with a balance beam, a journal, and totals.
    - Scroll behavior: as the user scrolls through a ~300vh section, each of the four example entries posts. The debit lands first, the beam tilts, and the status reads "Out by ₦X". The credit then lands and the beam settles with "Balanced."
    - Reduced motion: all four entries are shown posted, with no beam tilt.
+   - Phones, tablets and short screens (under 900px wide or 640px tall): no pinning. The panel sits under the text with "Post next entry" and "Start over" buttons instead.
 3. **Chapter — Cachet.**
    - Left column: story and benchmark bars (SET 77k+, GET 59k+, 50 clients).
    - Right column: a working in-browser terminal (SET/GET/DEL/EXPIRE/TTL/PING, with a real TTL countdown) and an 8-shard strip that lights the shard for the last key.
