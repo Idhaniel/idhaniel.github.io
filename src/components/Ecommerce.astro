@@ -147,14 +147,14 @@ const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', '
   }
   .shop__body { margin: 0; max-width: 30em; font-size: var(--text-body-lg); line-height: var(--lh-body); color: var(--stone); }
   .shop__link { align-self: flex-start; font-size: var(--text-small); border-bottom: 1px solid var(--edge); padding-block: 4px; }
-  .shop__link:hover { border-color: var(--accent); }
+  .shop__link:hover { border-color: var(--accent-ink); }
 
   /* Module map: AppModule over its feature modules, as outlined boxes. */
   .mods { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .mods__root {
     margin: 0;
     padding: 8px 14px;
-    border: 1px solid var(--accent);
+    border: 1px solid var(--accent-ink);
     border-radius: var(--radius-cell);
     font-size: 14px;
   }
@@ -200,7 +200,7 @@ const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', '
     cursor: pointer;
     transition: background-color var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease), border-color var(--dur-ui) var(--ease);
   }
-  .pipe__scenarios button:hover { border-color: var(--accent); color: var(--bone); }
+  .pipe__scenarios button:hover { border-color: var(--accent-ink); color: var(--bone); }
   .pipe__scenarios button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
   .pipe__steps { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
@@ -219,12 +219,12 @@ const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', '
     width: 11px;
     height: 11px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent);
+    background: var(--accent-ink);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-ink) 22%, transparent);
     transition: transform 380ms var(--ease), background-color var(--dur-ui) var(--ease);
     z-index: 2;
   }
-  .pipe__packet.is-bad { background: var(--amber); box-shadow: 0 0 0 5px color-mix(in srgb, var(--amber) 22%, transparent); }
+  .pipe__packet.is-bad { background: var(--amber-ink); box-shadow: 0 0 0 5px color-mix(in srgb, var(--amber-ink) 22%, transparent); }
 
   .step {
     display: grid;
@@ -250,9 +250,9 @@ const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', '
   .step__name { font-size: 14px; }
   .step__note { font-size: 14px; color: var(--ash); }
   .step.is-on, .step.is-pass, .step.is-fail { opacity: 1; }
-  .step.is-pass .step__dot { border-color: var(--accent); }
-  .step.is-fail .step__dot { border-color: var(--amber); }
-  .step.is-fail .step__name { color: var(--amber); }
+  .step.is-pass .step__dot { border-color: var(--accent-ink); }
+  .step.is-fail .step__dot { border-color: var(--amber-ink); }
+  .step.is-fail .step__name { color: var(--amber-ink); }
 
   .pipe__result {
     margin: 0;
@@ -263,8 +263,8 @@ const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', '
     transition: opacity var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease);
   }
   .pipe__result.is-shown { opacity: 1; }
-  .pipe__result.is-ok { color: var(--accent); }
-  .pipe__result.is-bad { color: var(--amber); }
+  .pipe__result.is-ok { color: var(--accent-ink); }
+  .pipe__result.is-bad { color: var(--amber-ink); }
 
   @media (prefers-reduced-motion: reduce) {
     .pipe__packet, .step, .step__dot, .pipe__result { transition: none; }

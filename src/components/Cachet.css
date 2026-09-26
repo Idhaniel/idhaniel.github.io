@@ -49,7 +49,7 @@
   min-height: 0;
   padding-block: 4px;
 }
-.cachet__link:hover { border-color: var(--accent); }
+.cachet__link:hover { border-color: var(--accent-ink); }
 
 /* Benchmark bars */
 .bench { display: flex; flex-direction: column; gap: 14px; max-width: 420px; padding-top: 8px; }
@@ -59,7 +59,7 @@
 .bench__track { height: 6px; background: var(--plate); border-radius: var(--radius-bar); overflow: hidden; }
 .bench__bar {
   height: 100%;
-  background: var(--accent);
+  background: var(--accent-ink);
   border-radius: var(--radius-bar);
   transform-origin: left;
   transform: scaleX(0);
@@ -114,7 +114,7 @@
   border-top: 1px solid var(--rule);
   padding-top: 14px;
 }
-.term__input .term__prompt { color: var(--accent); }
+.term__input .term__prompt { color: var(--accent-ink); }
 .term__input input {
   flex-grow: 1;
   min-width: 0;
@@ -127,7 +127,7 @@
   outline: none;
 }
 .term__input input::placeholder { color: var(--ash); opacity: 0.6; }
-.term__input:focus-within { border-top-color: var(--accent); }
+.term__input:focus-within { border-top-color: var(--accent-ink); }
 .term__input button {
   font: inherit;
   font-size: var(--text-small);
@@ -148,7 +148,7 @@
   cursor: pointer;
   transition: border-color var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease);
 }
-.term__tries button:hover { border-color: var(--accent); color: var(--bone); }
+.term__tries button:hover { border-color: var(--accent-ink); color: var(--bone); }
 
 .term__foot {
   display: flex;

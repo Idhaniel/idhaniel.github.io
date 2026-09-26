@@ -174,8 +174,8 @@ const blocks = stops.map((s, i) => {
     height: 9px;
     z-index: 2;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 20%, transparent);
+    background: var(--accent-ink);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent-ink) 20%, transparent);
   }
 
   .block {
@@ -208,7 +208,7 @@ const blocks = stops.map((s, i) => {
   .block--how { width: min(86vw, 440px); }
   .how { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 10px; color: var(--stone); font-size: var(--text-body); line-height: 1.5; }
   .block__link { align-self: flex-start; font-size: var(--text-small); border-bottom: 1px solid var(--edge); padding-block: 4px; }
-  .block__link:hover { border-color: var(--accent); }
+  .block__link:hover { border-color: var(--accent-ink); }
 
   /* Live: pinned stage, track moved by scroll. */
   .chain.is-live .chain__stage {
@@ -222,8 +222,8 @@ const blocks = stops.map((s, i) => {
   .chain.is-live .chain__track { will-change: transform; }
   .chain.is-live .block { opacity: 0.45; transform: scale(0.94); }
   .chain.is-live .block.is-past { opacity: 0.7; transform: none; }
-  .chain.is-live .block.is-on { opacity: 1; transform: none; border-color: var(--accent); }
-  .chain.is-live .block.is-on .block__hash { color: var(--accent); }
+  .chain.is-live .block.is-on { opacity: 1; transform: none; border-color: var(--accent-ink); }
+  .chain.is-live .block.is-on .block__hash { color: var(--accent-ink); }
 
   @media (max-height: 700px) {
     .chain__stage { gap: 24px; }

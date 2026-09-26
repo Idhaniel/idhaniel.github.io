@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import NetworkBackdrop from './NetworkBackdrop.astro';
+import ThemeToggle from './ThemeToggle.astro';
 import photo from '../assets/daniel.jpg';
 
 const email = 'danieluwanduc@gmail.com';
@@ -19,6 +20,7 @@ const last = 'Uwandu'.split('');
         <a href="/resume.pdf" download="Daniel-Uwandu-CV.pdf">Download CV</a>
         <a class="pill pill--primary" href={`mailto:${email}`}>Email me</a>
       </nav>
+      <ThemeToggle />
     </div>
 
     <div class="body" data-hero>
@@ -85,6 +87,7 @@ const last = 'Uwandu'.split('');
 
   /* Top bar */
   .bar {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -102,6 +105,7 @@ const last = 'Uwandu'.split('');
     align-items: center;
   }
   .nav {
+    margin-left: auto;
     display: flex;
     align-items: center;
     gap: 4px 28px;
@@ -189,12 +193,13 @@ const last = 'Uwandu'.split('');
   .facts dd { margin: 0; }
   .links { display: flex; flex-wrap: wrap; gap: 4px 24px; }
   .links a { border-bottom: 1px solid var(--edge); }
-  .links a:hover { border-color: var(--accent); }
+  .links a:hover { border-color: var(--accent-ink); }
 
   /* Phones and tablets: everything centred, name above the nav. */
   @media (max-width: 899px) {
     .bar { flex-direction: column; justify-content: center; gap: 4px; }
-    .nav { justify-content: center; flex-wrap: wrap; gap: 4px 24px; }
+    .bar > :global(.theme-toggle) { position: absolute; top: 16px; right: 0; }
+    .nav { margin-left: 0; justify-content: center; flex-wrap: wrap; gap: 4px 24px; }
     .top { align-items: center; }
     .name { text-align: center; }
     .meta { text-align: center; }

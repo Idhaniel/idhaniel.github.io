@@ -140,7 +140,7 @@
 .beam__amount { font-family: var(--font-mono); font-size: clamp(14px, 1.3vw, 17px); }
 .beam__rule { height: 2px; background: var(--bone); }
 .beam__pivot { display: block; }
-.beam__pivot path { stroke: var(--accent); }
+.beam__pivot path { stroke: var(--accent-ink); }
 
 .ledger__status {
   margin: 0;
@@ -149,7 +149,7 @@
   color: var(--ash);
   transition: color var(--dur-ui) var(--ease);
 }
-.ledger__status.is-balanced { color: var(--accent); }
+.ledger__status.is-balanced { color: var(--accent-ink); }
 
 /* Journal */
 .journal { display: flex; flex-direction: column; min-height: 0; flex-grow: 1; }

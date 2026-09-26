@@ -12,8 +12,11 @@
   --ash: #8f9891;
   --accent: #c4f04a;       /* link-up green */
   --accent-hover: color-mix(in srgb, var(--accent) 88%, white);
-  --on-accent: var(--ink);
+  --on-accent: #0c100e;
   --amber: #ffb547;        /* activity amber */
+  /* Text, strokes and small marks. Same as the fills on dark; darker on light. */
+  --accent-ink: var(--accent);
+  --amber-ink: var(--amber);
 
   /* Type */
   --font-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
@@ -58,6 +61,38 @@
   --ease: cubic-bezier(.2, .8, .2, 1);
   --dur-ui: 250ms;
   --dur-reveal: 650ms;
+}
+
+/* Light theme: the visitor's choice (data-theme), else their system setting. */
+:root[data-theme='light'] {
+  --ink: #f3f4ee;
+  --plate: #e7eae0;
+  --well: #fafbf7;
+  --rule: #dce0d4;
+  --rule-strong: #cdd2c5;
+  --edge: #a9b0a4;
+  --bone: #111512;
+  --stone: #2f3831;
+  --ash: #58625a;
+  --accent-hover: color-mix(in srgb, var(--accent) 90%, black);
+  --accent-ink: #3b6600;
+  --amber-ink: #8f5400;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    --ink: #f3f4ee;
+    --plate: #e7eae0;
+    --well: #fafbf7;
+    --rule: #dce0d4;
+    --rule-strong: #cdd2c5;
+    --edge: #a9b0a4;
+    --bone: #111512;
+    --stone: #2f3831;
+    --ash: #58625a;
+    --accent-hover: color-mix(in srgb, var(--accent) 90%, black);
+    --accent-ink: #3b6600;
+    --amber-ink: #8f5400;
+  }
 }
 
 @media (min-width: 720px) {
