@@ -1,0 +1,88 @@
+---
+import NetworkBackdrop from './NetworkBackdrop.astro';
+
+const email = 'danieluwanduc@gmail.com';
+---
+<footer class="contact" aria-labelledby="contact-title">
+  <NetworkBackdrop seed={3} class="contact-net" />
+  <div class="container contact__inner">
+    <h2 id="contact-title" class="contact__lead" data-split>Have a backend that needs building?</h2>
+    <a class="contact__email" href={`mailto:${email}`} data-reveal>{email}</a>
+    <div class="contact__actions" data-reveal data-reveal-delay="1">
+      <a class="pill pill--primary" href={`mailto:${email}`}>Email me</a>
+      <a class="pill pill--ghost" href="/resume.pdf" download="Daniel-Uwandu-CV.pdf">Download CV</a>
+      <a class="contact__link" href="https://github.com/Idhaniel">GitHub</a>
+      <a class="contact__link" href="https://linkedin.com/in/daniel-u-b79b78194">LinkedIn</a>
+    </div>
+    <p class="contact__foot">
+      <span>Lagos, Nigeria. GMT+1.</span>
+      <span data-lagos-time></span>
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Shows the visitor Daniel's local time.
+  const el = document.querySelector<HTMLElement>('[data-lagos-time]');
+  if (el) {
+    const fmt = new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', timeZone: 'Africa/Lagos' });
+    const tick = () => { el.textContent = `It’s ${fmt.format(new Date())} here now.`; };
+    tick();
+    setInterval(tick, 30000);
+  }
+</script>
+
+<style>
+  .contact {
+    position: relative;
+    overflow: hidden;
+    margin-top: var(--chapter-gap);
+    border-top: 1px solid var(--rule);
+  }
+  .contact :global(.contact-net) {
+    -webkit-mask-image: radial-gradient(90% 80% at 80% 60%, black 15%, transparent 75%);
+    mask-image: radial-gradient(90% 80% at 80% 60%, black 15%, transparent 75%);
+  }
+  .contact__inner {
+    position: relative;
+    padding-block: clamp(96px, 14vw, 180px) 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .contact__lead {
+    margin: 0;
+    max-width: 16em;
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--track-h2);
+    font-weight: 400;
+  }
+  .contact__email {
+    align-self: flex-start;
+    font-size: clamp(22px, 4.2vw, 56px);
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 4px;
+  }
+  .contact__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .contact__link {
+    font-size: var(--text-small);
+    min-height: var(--target);
+    display: inline-flex;
+    align-items: center;
+  }
+  .contact__foot {
+    margin: 64px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px 24px;
+    font-size: 14px;
+    color: var(--ash);
+  }
+</style>

@@ -1,0 +1,49 @@
+---
+const groups = [
+  { name: 'Languages', items: ['C#', 'TypeScript', 'JavaScript', 'Go', 'SQL', 'C++', 'Solidity'] },
+  { name: 'Backend', items: ['ASP.NET Core', 'Entity Framework', 'Node.js', 'NestJS', 'Express', 'REST APIs', 'Auth and RBAC'] },
+  { name: 'Data', items: ['SQL Server', 'PostgreSQL', 'MySQL', 'MongoDB', 'TypeORM'] },
+  { name: 'Infrastructure and networking', items: ['Docker', 'Kubernetes basics', 'Linux', 'Windows Server', 'IIS', 'CI/CD', 'Git', 'TCP/IP'] },
+];
+---
+<section class="stack container" aria-labelledby="stack-title">
+  <h2 id="stack-title" class="stack__title" data-split>What I work with</h2>
+  <div class="stack__groups">
+    {groups.map((g, i) => (
+      <div class="group" data-reveal data-reveal-delay={String(Math.min(i, 2))}>
+        <h3>{g.name}</h3>
+        <ul>{g.items.map((it) => <li>{it}</li>)}</ul>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stack { padding-top: var(--chapter-gap); display: flex; flex-direction: column; gap: 36px; }
+  .stack__title {
+    margin: 0;
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--track-h2);
+    font-weight: 400;
+  }
+  .stack__groups {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px var(--gutter);
+  }
+  @media (min-width: 600px) { .stack__groups { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (min-width: 1100px) { .stack__groups { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  .group { padding-top: 16px; border-top: 1px solid var(--rule-strong); }
+  .group h3 { margin: 0 0 12px; font-size: var(--text-small); font-weight: 500; color: var(--accent); }
+  .group ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: var(--text-body);
+    color: var(--stone);
+  }
+</style>

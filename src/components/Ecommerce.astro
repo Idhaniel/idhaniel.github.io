@@ -1,0 +1,272 @@
+---
+// One request through the NestJS pipeline of the sneaker store backend.
+// Scenarios stop at the layer that would reject them in the real code.
+const steps = [
+  { name: 'POST /sneakers', note: 'Name, price, sizes and a photo, as multipart form data' },
+  { name: 'AccessTokenGuard', note: 'MasterGuard checks the bearer token first' },
+  { name: 'PermissionGuard', note: 'Then the route’s @Permission rule: only admins add stock' },
+  { name: 'ValidationPipe', note: 'CreateSneakerDto rejects a bad price or unknown size' },
+  { name: 'SneakersService', note: 'Uploads the photo to Cloudinary' },
+  { name: 'TypeORM → PostgreSQL', note: 'Saves the sneaker row' },
+];
+const scenarios = [
+  { id: 'admin', label: 'Admin', stop: 6, code: '201 Created' },
+  { id: 'guest', label: 'No token', stop: 1, code: '401 Unauthorized' },
+  { id: 'customer', label: 'Customer', stop: 2, code: '403 Forbidden' },
+  { id: 'bad', label: 'Bad price', stop: 3, code: '400 Bad Request' },
+];
+const modules = ['AuthModule', 'UsersModule', 'AdminModule', 'SneakersModule', 'CloudinaryModule', 'ConfigModule'];
+---
+<section class="shop container" aria-labelledby="shop-title" data-shop>
+  <div class="shop__copy">
+    <p class="shop__meta"><span class="chip">04 / 04</span><span>Project</span></p>
+    <h2 id="shop-title" class="shop__title" data-split>The backend of a sneaker store</h2>
+    <p class="shop__body" data-reveal data-reveal-delay="1">
+      A NestJS and TypeScript API over PostgreSQL. Each concern lives in its own
+      module, and every request passes the same guards and validation before it
+      touches the database.
+    </p>
+    <div class="mods" data-reveal data-reveal-delay="2">
+      <p class="mods__root">AppModule</p>
+      <ul class="mods__list">
+        {modules.map((m) => <li>{m}</li>)}
+      </ul>
+    </div>
+    <a class="shop__link" href="https://github.com/Idhaniel/monarch-stores-public">Source on GitHub</a>
+  </div>
+
+  <div class="pipe" data-reveal="zoom">
+    <div class="pipe__scenarios" role="group" aria-label="Send a request as">
+      {scenarios.map((s, i) => (
+        <button type="button" data-scenario={s.id} data-stop={s.stop} data-code={s.code} aria-pressed={i === 0 ? 'true' : 'false'}>
+          {s.label}
+        </button>
+      ))}
+    </div>
+
+    <ol class="pipe__steps">
+      <li class="pipe__rail" aria-hidden="true"><span class="pipe__packet" data-packet></span></li>
+      {steps.map((s, i) => (
+        <li class="step" data-step={i}>
+          <span class="step__dot" aria-hidden="true"></span>
+          <span class="step__name num">{s.name}</span>
+          <span class="step__note">{s.note}</span>
+        </li>
+      ))}
+    </ol>
+
+    <p class="pipe__result" aria-live="polite" data-result><span class="num">201 Created</span></p>
+  </div>
+</section>
+
+<script>
+  // Plays a request down the pipeline: each layer lights in turn, and the
+  // packet stops where that scenario would be rejected.
+  const root = document.querySelector<HTMLElement>('[data-shop]');
+  if (root) {
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>('[data-scenario]')];
+    const steps = [...root.querySelectorAll<HTMLElement>('[data-step]')];
+    const packet = root.querySelector<HTMLElement>('[data-packet]')!;
+    // Park the packet on the first step before anything plays.
+    const first = steps[0];
+    packet.style.transform = `translate3d(0, ${first.offsetTop + first.offsetHeight / 2 - packet.parentElement!.offsetTop}px, 0)`;
+    const result = root.querySelector<HTMLElement>('[data-result]')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let timers: number[] = [];
+
+    const play = (btn: HTMLButtonElement) => {
+      timers.forEach(clearTimeout);
+      timers = [];
+      buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      const stop = Number(btn.dataset.stop);
+      const ok = stop === steps.length;
+      steps.forEach((s) => s.classList.remove('is-on', 'is-pass', 'is-fail'));
+      result.classList.remove('is-ok', 'is-bad', 'is-shown');
+      packet.classList.remove('is-bad');
+      packet.style.transition = 'none';
+      packet.style.transform = `translate3d(0, ${first.offsetTop + first.offsetHeight / 2 - packet.parentElement!.offsetTop}px, 0)`;
+      void packet.offsetHeight;
+      packet.style.transition = '';
+
+      const last = ok ? steps.length - 1 : stop;
+      const hop = reduce ? 0 : 420;
+      for (let i = 0; i <= last; i++) {
+        timers.push(window.setTimeout(() => {
+          const s = steps[i];
+          const rail = packet.parentElement!;
+          const y = s.offsetTop + s.offsetHeight / 2 - rail.offsetTop;
+          packet.style.transform = `translate3d(0, ${y}px, 0)`;
+          steps.forEach((x, j) => x.classList.toggle('is-on', j === i));
+          if (i > 0) steps[i - 1].classList.add('is-pass');
+          if (i === last) {
+            s.classList.add(ok ? 'is-pass' : 'is-fail');
+            if (!ok) packet.classList.add('is-bad');
+            result.innerHTML = `<span class="num">${btn.dataset.code}</span>`;
+            result.classList.add(ok ? 'is-ok' : 'is-bad', 'is-shown');
+          }
+        }, i * hop));
+      }
+    };
+
+    buttons.forEach((b) => b.addEventListener('click', () => play(b)));
+
+    // Send the admin request once when the pipeline first comes into view.
+    const io = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { play(buttons[0]); io.disconnect(); }
+    }, { rootMargin: '0px 0px -25% 0px' });
+    io.observe(root.querySelector('.pipe')!);
+  }
+</script>
+
+<style>
+  .shop {
+    padding-block: var(--chapter-gap) 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 48px;
+  }
+  @media (min-width: 900px) {
+    .shop {
+      grid-template-columns: repeat(12, minmax(0, 1fr));
+      column-gap: var(--gutter);
+      align-items: center;
+    }
+    .shop__copy { grid-column: span 5; padding-right: var(--gutter); }
+    .pipe { grid-column: span 7; }
+  }
+  .num { font-family: var(--font-mono); }
+
+  .shop__copy { display: flex; flex-direction: column; gap: 20px; }
+  .shop__meta { margin: 0; display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--ash); }
+  .shop__title {
+    margin: 0;
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--track-h2);
+    font-weight: 400;
+  }
+  .shop__body { margin: 0; max-width: 30em; font-size: var(--text-body-lg); line-height: var(--lh-body); color: var(--stone); }
+  .shop__link { align-self: flex-start; font-size: var(--text-small); border-bottom: 1px solid var(--edge); padding-block: 4px; }
+  .shop__link:hover { border-color: var(--accent); }
+
+  /* Module map: AppModule over its feature modules, as outlined boxes. */
+  .mods { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .mods__root {
+    margin: 0;
+    padding: 8px 14px;
+    border: 1px solid var(--accent);
+    border-radius: var(--radius-cell);
+    font-size: 14px;
+  }
+  .mods__list {
+    list-style: none;
+    margin: 0;
+    padding: 12px 0 0 16px;
+    border-left: 1px solid var(--edge);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .mods__list li {
+    padding: 6px 12px;
+    border: 1px solid var(--edge);
+    border-radius: var(--radius-cell);
+    font-size: 13px;
+    color: var(--stone);
+  }
+
+  /* Pipeline */
+  .pipe {
+    min-width: 0;
+    background: var(--plate);
+    border-radius: var(--radius-panel);
+    padding: 24px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  @media (min-width: 720px) { .pipe { padding: 32px 36px; } }
+
+  .pipe__scenarios { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pipe__scenarios button {
+    min-height: 40px;
+    padding: 0 16px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--edge);
+    background: transparent;
+    color: var(--stone);
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease), border-color var(--dur-ui) var(--ease);
+  }
+  .pipe__scenarios button:hover { border-color: var(--accent); color: var(--bone); }
+  .pipe__scenarios button[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+  .pipe__steps { position: relative; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .pipe__rail {
+    position: absolute;
+    left: 7px;
+    top: 22px;
+    bottom: 22px;
+    width: 1px;
+    background: var(--edge);
+  }
+  .pipe__packet {
+    position: absolute;
+    left: -5px;
+    top: -5.5px;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 22%, transparent);
+    transition: transform 380ms var(--ease), background-color var(--dur-ui) var(--ease);
+    z-index: 2;
+  }
+  .pipe__packet.is-bad { background: var(--amber); box-shadow: 0 0 0 5px color-mix(in srgb, var(--amber) 22%, transparent); }
+
+  .step {
+    display: grid;
+    grid-template-columns: 15px 1fr;
+    column-gap: 18px;
+    row-gap: 2px;
+    padding: 10px 0;
+    opacity: 0.5;
+    transition: opacity var(--dur-ui) var(--ease);
+  }
+  .step__dot {
+    grid-row: span 2;
+    align-self: center;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    border: 1px solid var(--edge);
+    background: var(--plate);
+    position: relative;
+    z-index: 1;
+    transition: border-color var(--dur-ui) var(--ease);
+  }
+  .step__name { font-size: 14px; }
+  .step__note { font-size: 14px; color: var(--ash); }
+  .step.is-on, .step.is-pass, .step.is-fail { opacity: 1; }
+  .step.is-pass .step__dot { border-color: var(--accent); }
+  .step.is-fail .step__dot { border-color: var(--amber); }
+  .step.is-fail .step__name { color: var(--amber); }
+
+  .pipe__result {
+    margin: 0;
+    padding-top: 16px;
+    border-top: 1px solid var(--rule);
+    font-size: 16px;
+    opacity: 0.4;
+    transition: opacity var(--dur-ui) var(--ease), color var(--dur-ui) var(--ease);
+  }
+  .pipe__result.is-shown { opacity: 1; }
+  .pipe__result.is-ok { color: var(--accent); }
+  .pipe__result.is-bad { color: var(--amber); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pipe__packet, .step, .step__dot, .pipe__result { transition: none; }
+  }
+</style>

@@ -99,6 +99,7 @@ Type rules:
 5. **Chapter — E-commerce backend.**
    - A compact case study: a module diagram (NestJS modules as outlined boxes) and one annotated order-plus-payment transaction sequence.
    - No scroll pinning. Contrast with the chapters above is intentional.
+   - Built: `src/components/Ecommerce.astro`, based on the public repo (github.com/Idhaniel/monarch-stores-public). The public code has auth, users, admin, sneakers and Cloudinary modules on TypeORM + PostgreSQL, but no order or payment code, so the sequence shown is "admin adds a sneaker": POST /sneakers → AccessTokenGuard → PermissionGuard (both via MasterGuard) → ValidationPipe (CreateSneakerDto) → SneakersService (Cloudinary upload) → TypeORM/PostgreSQL. Scenario buttons (Admin, No token, Customer, Bad price) replay it and stop at the layer that rejects them (201/401/403/400). It plays once on enter.
 6. **About.**
    - Two short paragraphs in first person, plus education (UNILAG, Computer Engineering, 2026, CGPA 4.52/5.00).
    - Photo at `src/assets/daniel.jpg` (4:5, metadata stripped), shown as a plain rectangle with an 18px radius and a mild grayscale.
@@ -107,7 +108,8 @@ Type rules:
    - Four plain grouped lists: Languages, Backend, Data, Infrastructure and networking.
    - No logos, no percentage bars, no star ratings.
 8. **Contact.**
-   - A large "Email me" line (mailto: danieluwanduc@gmail.com), a "Download CV" pill (`/resume.pdf`), plus GitHub and LinkedIn.
+   - Lead line "Have a backend that needs building?", the email address large and underlined in accent (mailto: danieluwanduc@gmail.com), "Email me" and "Download CV" pills (`/resume.pdf`), GitHub and LinkedIn. The network map sits faintly behind it.
+   - The footer also shows Daniel's current local time in Lagos.
    - Footer with location and time zone, written as a sentence ("Lagos, Nigeria. GMT+1.").
 
 The chapter order is a sequence, so a small "Work 1 of 4" style indicator is allowed in a sticky chapter nav. Nowhere else.
@@ -149,7 +151,7 @@ Rules:
 
 ## 8. SEO and link previews
 
-- `<title>`: "Daniel Uwandu — Software developer"
+- `<title>`: "Daniel Uwandu — Backend developer"
 - Meta description: one sentence, taken from the hero lede.
 - Open Graph tags:
   - `og:title`, `og:description`, `og:type=website`, `og:url`

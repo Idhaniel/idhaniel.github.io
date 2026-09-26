@@ -1,0 +1,64 @@
+<section class="about container" id="about" aria-labelledby="about-title">
+  <h2 id="about-title" class="about__title" data-split>About</h2>
+  <div class="about__text" data-reveal>
+    <p>
+      I’m a backend developer at Today’s Solution in Lagos, where I built and
+      run the wallet for a loan platform in C# and ASP.NET Core. Outside work I
+      build things to see how they work inside, which is how Cachet happened.
+    </p>
+    <p>
+      I prefer fewer dependencies and code I understand. I moved a sign-up
+      flow’s emails onto a background queue so people weren’t left waiting on
+      the mail server, and I’ve sped up slow queries by getting the indexes
+      right. Away from the keyboard I read about computer networking and watch
+      a lot of anime.
+    </p>
+  </div>
+  <dl class="about__edu" data-reveal data-reveal-delay="1">
+    <dt>Education</dt>
+    <dd>B.Sc. Computer Engineering, University of Lagos, class of 2026</dd>
+    <dt>CGPA</dt>
+    <dd class="num">4.52 / 5.00</dd>
+  </dl>
+</section>
+
+<style>
+  .about {
+    padding-top: var(--chapter-gap);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+  @media (min-width: 900px) {
+    .about { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); }
+    .about__title { grid-column: 1 / span 4; }
+    .about__text, .about__edu { grid-column: 5 / span 7; }
+  }
+  .about__title {
+    margin: 0;
+    font-size: var(--text-h2);
+    line-height: var(--lh-h2);
+    letter-spacing: var(--track-h2);
+    font-weight: 400;
+  }
+  .about__text { display: flex; flex-direction: column; gap: 18px; }
+  .about__text p {
+    margin: 0;
+    max-width: 34em;
+    font-size: var(--text-lede);
+    line-height: 1.45;
+    color: var(--stone);
+  }
+  .about__edu {
+    margin: 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule-strong);
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    row-gap: 10px;
+    font-size: var(--text-small);
+  }
+  .about__edu dt { color: var(--ash); }
+  .about__edu dd { margin: 0; }
+  .num { font-family: var(--font-mono); font-size: 14px; }
+</style>
