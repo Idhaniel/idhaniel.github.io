@@ -87,7 +87,7 @@ Type rules:
 
 ## 5. Page structure (scroll story)
 
-1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Elsewhere). No photo in the hero. No typing effect.
+1. **Hero.** Small wordmark and nav (Work, About, Download CV, brass "Email me" pill). On phones the nav drops to its own row under the wordmark. The giant two-line name. Hairline rule. Then the lede on the left and a short definition list on the right (Now / Studied / Available / Elsewhere). No photo in the hero. No typing effect.
 2. **Chapter — The ledger (Today's Solution).** The signature moment.
    - Left column: meta, headline "Every naira has two sides.", and body text.
    - Right column: a pinned panel with a balance beam, a journal, and totals.
@@ -107,7 +107,8 @@ Type rules:
    - No scroll pinning. Contrast with the chapters above is intentional.
 6. **About.**
    - Two short paragraphs in first person, plus education (UNILAG, Computer Engineering, 2026, CGPA 4.52/5.00).
-   - Optional photo, shown as a plain rectangle with an 18px radius and a mild grayscale.
+   - Photo at `src/assets/daniel.jpg` (4:5, metadata stripped), shown as a plain rectangle with an 18px radius and a mild grayscale.
+   - Material for the paragraphs, in Daniel's words: he likes understanding systems in depth; he prefers removing dependencies to adding them ("no use your own spoil my own"); he built a queue for outgoing emails so sign-up responds straight away instead of waiting on the mail server; he sped up a slow database with the right indexes. Interests: computer networking (reads about it for fun) and anime. Keep it modest and specific.
 7. **Stack.**
    - Four plain grouped lists: Languages, Backend, Data, Infrastructure and networking.
    - No logos, no percentage bars, no star ratings.
@@ -197,6 +198,6 @@ After deploying, verify with opengraph.xyz and the LinkedIn Post Inspector.
 
 - [x] Loan system is under NDA: keep the abstracted ledger only, no real UI.
 - [x] Repos: Cachet https://github.com/Idhaniel/cachet, Supply chain https://github.com/Idhaniel/Supply-Chain-Public, E-commerce https://github.com/Idhaniel/monarch-stores-public. Most other work is private or under NDA.
-- [ ] Photo, or confirmation to skip it
+- [x] Photo: `src/assets/daniel.jpg`
 - [x] Résumé PDF, at `public/resume.pdf`
-- [ ] Availability line (open to roles? remote? start date?)
+- [x] Availability: open to any role, remote preferred, can start now.
